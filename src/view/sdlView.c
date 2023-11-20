@@ -161,7 +161,7 @@ void sdlUpdateView(View *view, GameState *game)
 		{
 			if (game->map[i * WIDTH + j].a)
 			{
-				SDL_Rect rect = {j * TAILLE_CEL * SCALE + (96 * SCALE), i * TAILLE_CEL * SCALE + (48 * SCALE), (TAILLE_CEL - 1) * SCALE, (TAILLE_CEL - 1) * SCALE};
+				SDL_Rect rect = {j * TAILLE_CEL * SCALE + (96 * SCALE), i * TAILLE_CEL * SCALE + (48 * SCALE), TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
 				SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[game->map[i * WIDTH + j].c], NULL, &rect);
 			}
 		}
