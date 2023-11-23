@@ -1,5 +1,5 @@
 #include "view.h"
-#include "sldView.h"
+#include "sdlView.h"
 
 /**
  * @brief createView implementation. */

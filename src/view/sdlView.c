@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "sldView.h"
+#include "sdlView.h"
 #include "modele/modele.h"
 #include <SDL2/SDL_image.h>
 
@@ -162,7 +162,7 @@ void sdlUpdateView(View *view, GameState *game)
 			if (game->map[i * WIDTH + j].a)
 			{
 				SDL_Rect rect = {j * TAILLE_CEL * SCALE + (96 * SCALE), i * TAILLE_CEL * SCALE + (48 * SCALE), TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
-				SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[game->map[i * WIDTH + j].c], NULL, &rect);
+				SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[game->map[i * WIDTH + j].c + (level % 10) * 3], NULL, &rect);
 			}
 		}
 	}
@@ -175,25 +175,25 @@ void sdlUpdateView(View *view, GameState *game)
 		case 6:
 			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (168 * SCALE);
 			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (124 * SCALE);
-			rect.w = (TAILLE_CEL - 1) * SCALE;
-			rect.h = (TAILLE_CEL - 1) * SCALE;
+			rect.w = TAILLE_CEL * SCALE;
+			rect.h = TAILLE_CEL * SCALE;
 			break;
 		case 3:
 			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (168 * SCALE);
 			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (120 * SCALE);
-			rect.w = (TAILLE_CEL - 1) * SCALE;
-			rect.h = (TAILLE_CEL - 1) * SCALE;
+			rect.w = TAILLE_CEL * SCALE;
+			rect.h = TAILLE_CEL * SCALE;
 			break;
 
 		default:
 			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (164 * SCALE);
 			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (120 * SCALE);
-			rect.w = (TAILLE_CEL - 1) * SCALE;
-			rect.h = (TAILLE_CEL - 1) * SCALE;
+			rect.w = TAILLE_CEL * SCALE;
+			rect.h = TAILLE_CEL * SCALE;
 			break;
 		}
 
-		SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[level % 10 + game->nextBox.c], NULL, &rect);
+		SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[game->nextBox.c + (level % 10) * 3], NULL, &rect);
 	}
 
 	// afficher top

@@ -1,7 +1,7 @@
 #include "controller.h"
 #include "sdlController.h"
 
-#include "view/sldView.h"
+#include "view/sdlView.h"
 
 void sdlEvent(GameState *game, int *run)
 {
@@ -23,9 +23,12 @@ void sdlEvent(GameState *game, int *run)
                     moveUp(game->map, &(game->p));
                     insertPiece(game);
                     int cleared = piecePosee(game->map, game->p);
-                    nbLignes += cleared;
-                    updateLevel();
-                    ajouteScore(cleared);
+                    if (cleared != 0)
+                    {
+                        nbLignes += cleared;
+                        updateLevel();
+                        ajouteScore(cleared);
+                    }
                     changePiece(game);
                     if (!verifCollision(game->map, game->p))
                     {
