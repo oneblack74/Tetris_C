@@ -173,25 +173,27 @@ void sdlUpdateView(View *view, GameState *game)
 		switch (game->nextBox.type)
 		{
 		case 6:
-			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (168 * SCALE);
-			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (124 * SCALE);
-			rect.w = TAILLE_CEL * SCALE;
-			rect.h = TAILLE_CEL * SCALE;
+			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (192 * SCALE);
+			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (116 * SCALE);
 			break;
 		case 3:
-			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (168 * SCALE);
+			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (200 * SCALE);
 			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (120 * SCALE);
-			rect.w = TAILLE_CEL * SCALE;
-			rect.h = TAILLE_CEL * SCALE;
+			break;
+
+		case 2:
+		case 4:
+			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (196 * SCALE);
+			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (120 * SCALE);
 			break;
 
 		default:
-			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (164 * SCALE);
-			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (120 * SCALE);
-			rect.w = TAILLE_CEL * SCALE;
-			rect.h = TAILLE_CEL * SCALE;
+			rect.x = game->nextBox.b[i].x * TAILLE_CEL * SCALE + (196 * SCALE);
+			rect.y = game->nextBox.b[i].y * TAILLE_CEL * SCALE + (112 * SCALE);
 			break;
 		}
+		rect.w = TAILLE_CEL * SCALE;
+		rect.h = TAILLE_CEL * SCALE;
 
 		SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[game->nextBox.c + (level % 10) * 3], NULL, &rect);
 	}

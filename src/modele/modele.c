@@ -10,8 +10,6 @@
 
 const int WIDTH = 10;
 const int HEIGHT = 20;
-const int PIECE_START_X = 3;
-const int PIECE_START_Y = -2;
 const int TAILLE_CEL = 8;
 const int SCALE = 3;
 
@@ -43,129 +41,150 @@ void initListePiece(GameState *game)
     Block b4;
 
     // T
-    b1.x = PIECE_START_X + 1;
-    b1.y = PIECE_START_Y + 2;
-    b2.x = PIECE_START_X + 2;
-    b2.y = PIECE_START_Y + 2;
-    b3.x = PIECE_START_X + 3;
-    b3.y = PIECE_START_Y + 2;
-    b4.x = PIECE_START_X + 2;
-    b4.y = PIECE_START_Y + 3;
+    b1.x = 0;
+    b1.y = 1;
+    b2.x = 1;
+    b2.y = 1;
+    b3.x = 2;
+    b3.y = 1;
+    b4.x = 1;
+    b4.y = 2;
     p.b[0] = b1;
     p.b[1] = b2;
     p.b[2] = b3;
     p.b[3] = b4;
     p.c = 0;
-    p.ind = 0;
     p.type = 0;
+    p.w = 3;
+    p.h = 3;
+    p.x = 4;
+    p.y = -1;
     game->listePiece[0] = p;
 
     // J
-    b1.x = PIECE_START_X + 1;
-    b1.y = PIECE_START_Y + 2;
-    b2.x = PIECE_START_X + 2;
-    b2.y = PIECE_START_Y + 2;
-    b3.x = PIECE_START_X + 3;
-    b3.y = PIECE_START_Y + 2;
-    b4.x = PIECE_START_X + 3;
-    b4.y = PIECE_START_Y + 3;
+    b1.x = 0;
+    b1.y = 1;
+    b2.x = 1;
+    b2.y = 1;
+    b3.x = 2;
+    b3.y = 1;
+    b4.x = 2;
+    b4.y = 2;
     p.b[0] = b1;
     p.b[1] = b2;
     p.b[2] = b3;
     p.b[3] = b4;
     p.c = 2;
-    p.ind = 0;
     p.type = 1;
+    p.w = 3;
+    p.h = 3;
+    p.x = 4;
+    p.y = -1;
     game->listePiece[1] = p;
 
     // Z
-    b1.x = PIECE_START_X + 3;
-    b1.y = PIECE_START_Y + 3;
-    b2.x = PIECE_START_X + 2;
-    b2.y = PIECE_START_Y + 3;
-    b3.x = PIECE_START_X + 2;
-    b3.y = PIECE_START_Y + 2;
-    b4.x = PIECE_START_X + 1;
-    b4.y = PIECE_START_Y + 2;
+    b1.x = 0;
+    b1.y = 0;
+    b2.x = 1;
+    b2.y = 0;
+    b3.x = 1;
+    b3.y = 1;
+    b4.x = 2;
+    b4.y = 1;
     p.b[0] = b1;
     p.b[1] = b2;
     p.b[2] = b3;
     p.b[3] = b4;
     p.c = 1;
-    p.ind = 0;
     p.type = 2;
+    p.w = 3;
+    p.h = 2;
+    p.x = 4;
+    p.y = 0;
     game->listePiece[2] = p;
 
     // O
-    b1.x = PIECE_START_X + 1;
-    b1.y = PIECE_START_Y + 2;
-    b2.x = PIECE_START_X + 2;
-    b2.y = PIECE_START_Y + 2;
-    b3.x = PIECE_START_X + 1;
-    b3.y = PIECE_START_Y + 3;
-    b4.x = PIECE_START_X + 2;
-    b4.y = PIECE_START_Y + 3;
+    b1.x = 0;
+    b1.y = 0;
+    b2.x = 1;
+    b2.y = 0;
+    b3.x = 0;
+    b3.y = 1;
+    b4.x = 1;
+    b4.y = 1;
     p.b[0] = b1;
     p.b[1] = b2;
     p.b[2] = b3;
     p.b[3] = b4;
     p.c = 0;
-    p.ind = 0;
     p.type = 3;
+    p.w = 2;
+    p.h = 2;
+    p.x = 4;
+    p.y = 0;
     game->listePiece[3] = p;
 
     // S
-    b1.x = PIECE_START_X + 3;
-    b1.y = PIECE_START_Y + 2;
-    b2.x = PIECE_START_X + 2;
-    b2.y = PIECE_START_Y + 2;
-    b3.x = PIECE_START_X + 2;
-    b3.y = PIECE_START_Y + 3;
-    b4.x = PIECE_START_X + 1;
-    b4.y = PIECE_START_Y + 3;
+    b1.x = 1;
+    b1.y = 0;
+    b2.x = 2;
+    b2.y = 0;
+    b3.x = 0;
+    b3.y = 1;
+    b4.x = 1;
+    b4.y = 1;
     p.b[0] = b1;
     p.b[1] = b2;
     p.b[2] = b3;
     p.b[3] = b4;
     p.c = 2;
-    p.ind = 0;
     p.type = 4;
+    p.w = 3;
+    p.h = 2;
+    p.x = 4;
+    p.y = 0;
     game->listePiece[4] = p;
 
     // L
-    b1.x = PIECE_START_X + 3;
-    b1.y = PIECE_START_Y + 2;
-    b2.x = PIECE_START_X + 2;
-    b2.y = PIECE_START_Y + 2;
-    b3.x = PIECE_START_X + 1;
-    b3.y = PIECE_START_Y + 2;
-    b4.x = PIECE_START_X + 1;
-    b4.y = PIECE_START_Y + 3;
+    b1.x = 0;
+    b1.y = 1;
+    b2.x = 1;
+    b2.y = 1;
+    b3.x = 2;
+    b3.y = 1;
+    b4.x = 0;
+    b4.y = 2;
     p.b[0] = b1;
     p.b[1] = b2;
     p.b[2] = b3;
     p.b[3] = b4;
     p.c = 1;
-    p.ind = 0;
     p.type = 5;
+    p.w = 3;
+    p.h = 3;
+    p.x = 4;
+    p.y = -1;
     game->listePiece[5] = p;
 
     // I
-    b1.x = PIECE_START_X;
-    b1.y = PIECE_START_Y + 2;
-    b2.x = PIECE_START_X + 1;
-    b2.y = PIECE_START_Y + 2;
-    b3.x = PIECE_START_X + 2;
-    b3.y = PIECE_START_Y + 2;
-    b4.x = PIECE_START_X + 3;
-    b4.y = PIECE_START_Y + 2;
+    b1.x = 0;
+    b1.y = 1;
+    b2.x = 1;
+    b2.y = 1;
+    b3.x = 2;
+    b3.y = 1;
+    b4.x = 3;
+    b4.y = 1;
     p.b[0] = b1;
     p.b[1] = b2;
     p.b[2] = b3;
     p.b[3] = b4;
     p.c = 0;
-    p.ind = 0;
     p.type = 6;
+    p.w = 4;
+    p.h = 3;
+    p.x = 3;
+    p.y = -1;
     game->listePiece[6] = p;
 }
 
@@ -191,8 +210,10 @@ void insertPiece(GameState *game)
         Block b = game->p.b[i];
         if (0 <= b.x && b.x < WIDTH && 0 <= b.y && b.y < HEIGHT)
         {
-            game->map[b.y * WIDTH + b.x].a = 1;
-            game->map[b.y * WIDTH + b.x].c = game->p.c;
+            int new_x = game->p.x + b.x;
+            int new_y = game->p.y + b.y;
+            game->map[new_y * WIDTH + new_x].a = 1;
+            game->map[new_y * WIDTH + new_x].c = game->p.c;
         }
     }
 }
@@ -205,7 +226,9 @@ void removePiece(GameState *game)
         Block b = game->p.b[i];
         if (0 <= b.x && b.x < WIDTH && 0 <= b.y && b.y < HEIGHT)
         {
-            game->map[b.y * WIDTH + b.x].a = 0;
+            int new_x = game->p.x + b.x;
+            int new_y = game->p.y + b.y;
+            game->map[new_y * WIDTH + new_x].a = 0;
         }
     }
 }
@@ -213,523 +236,63 @@ void removePiece(GameState *game)
 // déplace la pièce vers le bas
 void moveDown(Cel *map, Piece *p)
 {
-    for (int i = 0; i < 4; i++)
-    {
-        (*p).b[i].y++;
-    }
+    p->y++;
 }
 
 // déplace la pièce vers le haut (pour gérer les collisions)
 void moveUp(Cel *map, Piece *p)
 {
-    for (int i = 0; i < 4; i++)
-    {
-        (*p).b[i].y--;
-    }
+    p->y--;
 }
 
 // déplace la pièce vers la droite
 void moveRight(Cel *map, Piece *p)
 {
-    for (int i = 0; i < 4; i++)
-    {
-        (*p).b[i].x++;
-    }
+    p->x++;
 }
 
 // déplace la pièce vers la gauche
 void moveLeft(Cel *map, Piece *p)
 {
-    for (int i = 0; i < 4; i++)
-    {
-        (*p).b[i].x--;
-    }
+    p->x--;
 }
 
 // fait tourner la pièce vers la droite
-void rotateRight(Cel *map, Piece *p)
+void rotateLeft(Cel *map, Piece *p)
 {
-    switch ((*p).type)
+    for (int i = 0; i < 4; i++)
     {
-    // rotation droite pour le T
-    case 0:
-        switch ((*p).ind)
-        {
-        case 0:
-            (*p).b[0].x++;
-            (*p).b[0].y--;
-
-            (*p).b[2].x--;
-            (*p).b[2].y++;
-
-            (*p).b[3].x--;
-            (*p).b[3].y--;
-            break;
-
-        case 1:
-            (*p).b[0].x++;
-            (*p).b[0].y++;
-
-            (*p).b[2].x--;
-            (*p).b[2].y--;
-
-            (*p).b[3].x++;
-            (*p).b[3].y--;
-            break;
-
-        case 2:
-            (*p).b[0].x--;
-            (*p).b[0].y++;
-
-            (*p).b[2].x++;
-            (*p).b[2].y--;
-
-            (*p).b[3].x++;
-            (*p).b[3].y++;
-            break;
-
-        case 3:
-            (*p).b[0].x--;
-            (*p).b[0].y--;
-
-            (*p).b[2].x++;
-            (*p).b[2].y++;
-
-            (*p).b[3].x--;
-            (*p).b[3].y++;
-            break;
-
-        default:
-            break;
-        }
-        break;
-
-    // rotation droite pour le J
-    case 1:
-        switch ((*p).ind)
-        {
-        case 0:
-            (*p).b[0].x++;
-            (*p).b[0].y--;
-
-            (*p).b[2].x--;
-            (*p).b[2].y++;
-
-            (*p).b[3].x -= 2;
-            break;
-
-        case 1:
-            (*p).b[0].x++;
-            (*p).b[0].y++;
-
-            (*p).b[2].x--;
-            (*p).b[2].y--;
-
-            (*p).b[3].y -= 2;
-            break;
-
-        case 2:
-            (*p).b[0].x--;
-            (*p).b[0].y++;
-
-            (*p).b[2].x++;
-            (*p).b[2].y--;
-
-            (*p).b[3].x += 2;
-            break;
-
-        case 3:
-            (*p).b[0].x--;
-            (*p).b[0].y--;
-
-            (*p).b[2].x++;
-            (*p).b[2].y++;
-
-            (*p).b[3].y += 2;
-            break;
-
-        default:
-            break;
-        }
-        break;
-
-    // rotation droite pour le Z
-    case 2:
-        if ((*p).ind == 0 || (*p).ind == 2)
-        {
-            (*p).b[0].y -= 2;
-
-            (*p).b[1].x++;
-            (*p).b[1].y--;
-
-            (*p).b[3].x++;
-            (*p).b[3].y++;
-        }
-        else if ((*p).ind == 1 || (*p).ind == 3)
-        {
-            (*p).b[0].y += 2;
-
-            (*p).b[1].x--;
-            (*p).b[1].y++;
-
-            (*p).b[3].x--;
-            (*p).b[3].y--;
-        }
-        break;
-
-    // rotation droite pour le S
-    case 4:
-        if ((*p).ind == 0 || (*p).ind == 2)
-        {
-            (*p).b[0].x--;
-            (*p).b[0].y--;
-
-            (*p).b[2].x++;
-            (*p).b[2].y--;
-
-            (*p).b[3].x += 2;
-        }
-        else if ((*p).ind == 1 || (*p).ind == 3)
-        {
-            (*p).b[0].x++;
-            (*p).b[0].y++;
-
-            (*p).b[2].x--;
-            (*p).b[2].y++;
-
-            (*p).b[3].x -= 2;
-        }
-        break;
-
-    // rotation droite pour le L
-    case 5:
-        switch ((*p).ind)
-        {
-        case 0:
-            (*p).b[0].x--;
-            (*p).b[0].y++;
-
-            (*p).b[2].x++;
-            (*p).b[2].y--;
-
-            (*p).b[3].y -= 2;
-            break;
-
-        case 1:
-            (*p).b[0].x--;
-            (*p).b[0].y--;
-
-            (*p).b[2].x++;
-            (*p).b[2].y++;
-
-            (*p).b[3].x += 2;
-            break;
-
-        case 2:
-            (*p).b[0].x++;
-            (*p).b[0].y--;
-
-            (*p).b[2].x--;
-            (*p).b[2].y++;
-
-            (*p).b[3].y += 2;
-            break;
-
-        case 3:
-            (*p).b[0].x++;
-            (*p).b[0].y++;
-
-            (*p).b[2].x--;
-            (*p).b[2].y--;
-
-            (*p).b[3].x -= 2;
-            break;
-
-        default:
-            break;
-        }
-        break;
-
-    // rotation droite pour le I
-    case 6:
-        if ((*p).ind == 0 || (*p).ind == 2)
-        {
-            (*p).b[0].x += 2;
-            (*p).b[0].y -= 2;
-
-            (*p).b[1].x++;
-            (*p).b[1].y--;
-
-            (*p).b[3].x--;
-            (*p).b[3].y++;
-        }
-        else if ((*p).ind == 1 || (*p).ind == 3)
-        {
-            (*p).b[0].x -= 2;
-            (*p).b[0].y += 2;
-
-            (*p).b[1].x--;
-            (*p).b[1].y++;
-
-            (*p).b[3].x++;
-            (*p).b[3].y--;
-        }
-        break;
-
-    default:
-        break;
+        int new_x = p->b[i].y % p->h;
+        int new_y = (p->w - p->b[i].x - 1) + (p->b[i].y / p->h);
+        p->b[i].x = new_x;
+        p->b[i].y = new_y;
     }
-    if ((*p).ind == 3)
-    {
-        (*p).ind = 0;
-    }
-    else
-    {
-        (*p).ind++;
-    }
+
+    int tmp = p->h;
+    p->h = p->w;
+    p->w = tmp;
+
+    p->x -= (p->w - p->h);
+    p->y += (p->w - p->h);
 }
 
 // fait tourner la pièce vers la gauche
-void rotateLeft(Cel *map, Piece *p)
+void rotateRight(Cel *map, Piece *p)
 {
-    switch ((*p).type)
+    for (int i = 0; i < 4; i++)
     {
-    // rotation gauche pour le T
-    case 0:
-        switch ((*p).ind)
-        {
-        case 0:
-            (*p).b[0].x++;
-            (*p).b[0].y++;
-
-            (*p).b[2].x--;
-            (*p).b[2].y--;
-
-            (*p).b[3].x++;
-            (*p).b[3].y--;
-            break;
-
-        case 1:
-            (*p).b[0].x--;
-            (*p).b[0].y++;
-
-            (*p).b[2].x++;
-            (*p).b[2].y--;
-
-            (*p).b[3].x++;
-            (*p).b[3].y++;
-            break;
-
-        case 2:
-            (*p).b[0].x--;
-            (*p).b[0].y--;
-
-            (*p).b[2].x++;
-            (*p).b[2].y++;
-
-            (*p).b[3].x--;
-            (*p).b[3].y++;
-            break;
-
-        case 3:
-            (*p).b[0].x++;
-            (*p).b[0].y--;
-
-            (*p).b[2].x--;
-            (*p).b[2].y++;
-
-            (*p).b[3].x--;
-            (*p).b[3].y--;
-            break;
-
-        default:
-            break;
-        }
-        break;
-
-    // rotation gauche pour le J
-    case 1:
-        switch ((*p).ind)
-        {
-        case 0:
-            (*p).b[0].x++;
-            (*p).b[0].y++;
-
-            (*p).b[2].x--;
-            (*p).b[2].y--;
-
-            (*p).b[3].y -= 2;
-            break;
-
-        case 1:
-            (*p).b[0].x--;
-            (*p).b[0].y++;
-
-            (*p).b[2].x++;
-            (*p).b[2].y--;
-
-            (*p).b[3].x += 2;
-            break;
-
-        case 2:
-            (*p).b[0].x--;
-            (*p).b[0].y--;
-
-            (*p).b[2].x++;
-            (*p).b[2].y++;
-
-            (*p).b[3].y += 2;
-            break;
-
-        case 3:
-            (*p).b[0].x++;
-            (*p).b[0].y--;
-
-            (*p).b[2].x--;
-            (*p).b[2].y++;
-
-            (*p).b[3].x -= 2;
-            break;
-
-        default:
-            break;
-        }
-        break;
-
-    // rotation gauche pour le Z
-    case 2:
-        if ((*p).ind == 0 || (*p).ind == 2)
-        {
-            (*p).b[0].y -= 2;
-
-            (*p).b[1].x++;
-            (*p).b[1].y--;
-
-            (*p).b[3].x++;
-            (*p).b[3].y++;
-        }
-        else if ((*p).ind == 1 || (*p).ind == 3)
-        {
-            (*p).b[0].y += 2;
-
-            (*p).b[1].x--;
-            (*p).b[1].y++;
-
-            (*p).b[3].x--;
-            (*p).b[3].y--;
-        }
-        break;
-
-    // rotation gauche pour le S
-    case 4:
-        if ((*p).ind == 0 || (*p).ind == 2)
-        {
-            (*p).b[0].x--;
-            (*p).b[0].y--;
-
-            (*p).b[2].x++;
-            (*p).b[2].y--;
-
-            (*p).b[3].x += 2;
-        }
-        else if ((*p).ind == 1 || (*p).ind == 3)
-        {
-            (*p).b[0].x++;
-            (*p).b[0].y++;
-
-            (*p).b[2].x--;
-            (*p).b[2].y++;
-
-            (*p).b[3].x -= 2;
-        }
-        break;
-
-    // rotation gauche pour le L
-    case 5:
-        switch ((*p).ind)
-        {
-        case 0:
-            (*p).b[0].x--;
-            (*p).b[0].y--;
-
-            (*p).b[2].x++;
-            (*p).b[2].y++;
-
-            (*p).b[3].x += 2;
-            break;
-
-        case 1:
-            (*p).b[0].x++;
-            (*p).b[0].y--;
-
-            (*p).b[2].x--;
-            (*p).b[2].y++;
-
-            (*p).b[3].y += 2;
-            break;
-
-        case 2:
-            (*p).b[0].x++;
-            (*p).b[0].y++;
-
-            (*p).b[2].x--;
-            (*p).b[2].y--;
-
-            (*p).b[3].x -= 2;
-            break;
-
-        case 3:
-            (*p).b[0].x--;
-            (*p).b[0].y++;
-
-            (*p).b[2].x++;
-            (*p).b[2].y--;
-
-            (*p).b[3].y -= 2;
-            break;
-
-        default:
-            break;
-        }
-        break;
-
-    // rotation gauche pour le I
-    case 6:
-        if ((*p).ind == 0 || (*p).ind == 2)
-        {
-            (*p).b[0].x += 2;
-            (*p).b[0].y -= 2;
-
-            (*p).b[1].x++;
-            (*p).b[1].y--;
-
-            (*p).b[3].x--;
-            (*p).b[3].y++;
-        }
-        else if ((*p).ind == 1 || (*p).ind == 3)
-        {
-            (*p).b[0].x -= 2;
-            (*p).b[0].y += 2;
-
-            (*p).b[1].x--;
-            (*p).b[1].y++;
-
-            (*p).b[3].x++;
-            (*p).b[3].y--;
-        }
-        break;
-
-    default:
-        break;
+        int new_x = (p->h - p->b[i].y - 1) % p->h;
+        int new_y = p->b[i].x + (p->h - p->b[i].y - 1) / p->h;
+        p->b[i].x = new_x;
+        p->b[i].y = new_y;
     }
-    if ((*p).ind == 0)
-    {
-        (*p).ind = 3;
-    }
-    else
-    {
-        (*p).ind--;
-    }
+
+    int tmp = p->h;
+    p->h = p->w;
+    p->w = tmp;
+
+    p->x -= (p->w - p->h);
+    p->y += (p->w - p->h);
 }
 
 // supprime la ligne de coordonnée y
@@ -808,8 +371,8 @@ int verifCollision(Cel *map, Piece p)
 {
     for (int i = 0; i < 4; i++)
     {
-        int x = p.b[i].x;
-        int y = p.b[i].y;
+        int x = p.x + p.b[i].x;
+        int y = p.y + p.b[i].y;
 
         if (0 > x || x >= WIDTH)
             return 0;
@@ -951,7 +514,7 @@ int piecePosee(Cel *map, Piece p)
     int cpt = 0, yMax = -1;
     for (int i = 0; i < 4; i++)
     {
-        int y = p.b[i].y;
+        int y = p.y + p.b[i].y;
         if (verifDeleteLine(map, y))
         {
             cpt++;

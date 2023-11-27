@@ -28,7 +28,8 @@ typedef struct Piece
     Block b[4]; // liste de la pos des 4 blocks
     int c;      // couleur --> ind de la liste des couleurs
     int type;   // dans la liste [T, J, Z, O, S, L, I]
-    int ind;    // indice de sa rotation
+    int h, w;   // taille la matrice
+    int x, y;   // coordonnees du coins supérieur gauche de la matrice
 } Piece;
 
 // structure de cellule qui compose la map
