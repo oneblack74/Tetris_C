@@ -148,10 +148,10 @@ void insertPiece(GameState *game)
     for (int i = 0; i < 4; i++)
     {
         Block b = game->p.b[i];
-        if (0 <= b.x && b.x < WIDTH && 0 <= b.y && b.y < HEIGHT)
+        int new_x = game->p.x + b.x;
+        int new_y = game->p.y + b.y;
+        if (0 <= new_x && new_x < WIDTH && 0 <= new_y && new_y < HEIGHT)
         {
-            int new_x = game->p.x + b.x;
-            int new_y = game->p.y + b.y;
             game->map[new_y * WIDTH + new_x].a = 1;
             game->map[new_y * WIDTH + new_x].c = game->p.c;
         }
@@ -164,10 +164,10 @@ void removePiece(GameState *game)
     for (int i = 0; i < 4; i++)
     {
         Block b = game->p.b[i];
-        if (0 <= b.x && b.x < WIDTH && 0 <= b.y && b.y < HEIGHT)
+        int new_x = game->p.x + b.x;
+        int new_y = game->p.y + b.y;
+        if (0 <= new_x && new_x < WIDTH && 0 <= new_y && new_y < HEIGHT)
         {
-            int new_x = game->p.x + b.x;
-            int new_y = game->p.y + b.y;
             game->map[new_y * WIDTH + new_x].a = 0;
         }
     }
