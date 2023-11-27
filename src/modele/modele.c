@@ -26,6 +26,7 @@ void initModele(GameState *game)
 
     game->p = game->listePiece[rand() % 7];
     game->nextBox = game->listePiece[rand() % 7];
+    stats[game->p.type]++;
 }
 
 // initialise la liste qui contient les 7 pièces différentes
@@ -34,25 +35,12 @@ void initListePiece(GameState *game)
     game->listePiece = (Piece *)malloc(sizeof(Piece) * 7);
 
     Piece p;
-    // Block --> les coordonnées des 4 cellules de chaque pièce
-    Block b1;
-    Block b2;
-    Block b3;
-    Block b4;
 
     // T
-    b1.x = 0;
-    b1.y = 1;
-    b2.x = 1;
-    b2.y = 1;
-    b3.x = 2;
-    b3.y = 1;
-    b4.x = 1;
-    b4.y = 2;
-    p.b[0] = b1;
-    p.b[1] = b2;
-    p.b[2] = b3;
-    p.b[3] = b4;
+    p.b[0] = (Block){0, 1};
+    p.b[1] = (Block){1, 1};
+    p.b[2] = (Block){2, 1};
+    p.b[3] = (Block){1, 2};
     p.c = 0;
     p.type = 0;
     p.w = 3;
@@ -62,18 +50,10 @@ void initListePiece(GameState *game)
     game->listePiece[0] = p;
 
     // J
-    b1.x = 0;
-    b1.y = 1;
-    b2.x = 1;
-    b2.y = 1;
-    b3.x = 2;
-    b3.y = 1;
-    b4.x = 2;
-    b4.y = 2;
-    p.b[0] = b1;
-    p.b[1] = b2;
-    p.b[2] = b3;
-    p.b[3] = b4;
+    p.b[0] = (Block){0, 1};
+    p.b[1] = (Block){1, 1};
+    p.b[2] = (Block){2, 1};
+    p.b[3] = (Block){2, 2};
     p.c = 2;
     p.type = 1;
     p.w = 3;
@@ -83,18 +63,10 @@ void initListePiece(GameState *game)
     game->listePiece[1] = p;
 
     // Z
-    b1.x = 0;
-    b1.y = 0;
-    b2.x = 1;
-    b2.y = 0;
-    b3.x = 1;
-    b3.y = 1;
-    b4.x = 2;
-    b4.y = 1;
-    p.b[0] = b1;
-    p.b[1] = b2;
-    p.b[2] = b3;
-    p.b[3] = b4;
+    p.b[0] = (Block){0, 0};
+    p.b[1] = (Block){1, 0};
+    p.b[2] = (Block){1, 1};
+    p.b[3] = (Block){2, 1};
     p.c = 1;
     p.type = 2;
     p.w = 3;
@@ -104,18 +76,10 @@ void initListePiece(GameState *game)
     game->listePiece[2] = p;
 
     // O
-    b1.x = 0;
-    b1.y = 0;
-    b2.x = 1;
-    b2.y = 0;
-    b3.x = 0;
-    b3.y = 1;
-    b4.x = 1;
-    b4.y = 1;
-    p.b[0] = b1;
-    p.b[1] = b2;
-    p.b[2] = b3;
-    p.b[3] = b4;
+    p.b[0] = (Block){0, 0};
+    p.b[1] = (Block){1, 0};
+    p.b[2] = (Block){0, 1};
+    p.b[3] = (Block){1, 1};
     p.c = 0;
     p.type = 3;
     p.w = 2;
@@ -125,18 +89,10 @@ void initListePiece(GameState *game)
     game->listePiece[3] = p;
 
     // S
-    b1.x = 1;
-    b1.y = 0;
-    b2.x = 2;
-    b2.y = 0;
-    b3.x = 0;
-    b3.y = 1;
-    b4.x = 1;
-    b4.y = 1;
-    p.b[0] = b1;
-    p.b[1] = b2;
-    p.b[2] = b3;
-    p.b[3] = b4;
+    p.b[0] = (Block){1, 0};
+    p.b[1] = (Block){2, 0};
+    p.b[2] = (Block){0, 1};
+    p.b[3] = (Block){1, 1};
     p.c = 2;
     p.type = 4;
     p.w = 3;
@@ -146,18 +102,10 @@ void initListePiece(GameState *game)
     game->listePiece[4] = p;
 
     // L
-    b1.x = 0;
-    b1.y = 1;
-    b2.x = 1;
-    b2.y = 1;
-    b3.x = 2;
-    b3.y = 1;
-    b4.x = 0;
-    b4.y = 2;
-    p.b[0] = b1;
-    p.b[1] = b2;
-    p.b[2] = b3;
-    p.b[3] = b4;
+    p.b[0] = (Block){0, 1};
+    p.b[1] = (Block){1, 1};
+    p.b[2] = (Block){2, 1};
+    p.b[3] = (Block){0, 2};
     p.c = 1;
     p.type = 5;
     p.w = 3;
@@ -167,18 +115,10 @@ void initListePiece(GameState *game)
     game->listePiece[5] = p;
 
     // I
-    b1.x = 0;
-    b1.y = 1;
-    b2.x = 1;
-    b2.y = 1;
-    b3.x = 2;
-    b3.y = 1;
-    b4.x = 3;
-    b4.y = 1;
-    p.b[0] = b1;
-    p.b[1] = b2;
-    p.b[2] = b3;
-    p.b[3] = b4;
+    p.b[0] = (Block){0, 1};
+    p.b[1] = (Block){1, 1};
+    p.b[2] = (Block){2, 1};
+    p.b[3] = (Block){3, 1};
     p.c = 0;
     p.type = 6;
     p.w = 4;
@@ -533,6 +473,8 @@ void changePiece(GameState *game)
 {
     game->p = game->nextBox;
     game->nextBox = game->listePiece[rand() % 7];
+
+    stats[game->p.type]++;
 }
 
 void gameLoop(GameState *game)
