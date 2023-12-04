@@ -93,7 +93,7 @@ void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *s
 	{
 		int chiffre = n % 10;
 		SDL_Rect rect = {x + (nb_chiffre - 1 - cpt) * TAILLE_CEL * SCALE, y, TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
-		SDL_Rect rect_src = {n * 8, ind * 8, 8, 8};
+		SDL_Rect rect_src = {chiffre * TAILLE_CEL, ind * TAILLE_CEL, TAILLE_CEL, TAILLE_CEL};
 		SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[2], &rect_src, &rect);
 		n /= 10;
 		cpt++;
@@ -102,7 +102,7 @@ void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *s
 	for (cpt; cpt < nb_chiffre; cpt++)
 	{
 		SDL_Rect rect = {x + (nb_chiffre - 1 - cpt) * TAILLE_CEL * SCALE, y, TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
-		SDL_Rect rect_src = {n * 8, ind * 8, 8, 8};
+		SDL_Rect rect_src = {0, ind * TAILLE_CEL, TAILLE_CEL, TAILLE_CEL};
 		SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[2], &rect_src, &rect);
 	}
 }
@@ -130,7 +130,7 @@ void sdlUpdateView(View *view, GameState *game)
 		{
 			if (game->map[i * WIDTH + j].a)
 			{
-				SDL_Rect rect_src = {8 * (level % 10), game->map[i * WIDTH + j].c * 8, 8, 8};
+				SDL_Rect rect_src = {TAILLE_CEL * (level % 10), game->map[i * WIDTH + j].c * TAILLE_CEL, TAILLE_CEL, TAILLE_CEL};
 				SDL_Rect rect_dst = {j * TAILLE_CEL * SCALE + (96 * SCALE), i * TAILLE_CEL * SCALE + (48 * SCALE), TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
 				SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[2], &rect_src, &rect_dst);
 			}
@@ -165,7 +165,7 @@ void sdlUpdateView(View *view, GameState *game)
 		rect.w = TAILLE_CEL * SCALE;
 		rect.h = TAILLE_CEL * SCALE;
 
-		SDL_Rect rect_src = {(level % 10) * 8, game->nextBox.c * 8, 8, 8};
+		SDL_Rect rect_src = {(level % 10) * TAILLE_CEL, game->nextBox.c * TAILLE_CEL, TAILLE_CEL, TAILLE_CEL};
 		SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[2], &rect_src, &rect);
 	}
 

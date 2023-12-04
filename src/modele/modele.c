@@ -485,6 +485,10 @@ void gameLoop(GameState *game)
     int cleared;
     int run = 1;
     int ch;
+    unsigned long speed = 2400; // en milliseconde
+
+    clock_t clock_end = clock();
+    clock_t clock_begin = clock_end;
 
     insertPiece(game);
     updateView(SDL_VIEW, view, game);
@@ -493,6 +497,37 @@ void gameLoop(GameState *game)
     while (run)
     {
         removePiece(game);
+        if (((clock_end - clock_begin) * 1000 / CLOCKS_PER_SEC) >= speed)
+        {
+            moveDown(game->map, &(game->p));
+            if (!verifCollision(game->map, game->p))
+            {
+                moveUp(game->map, &(game->p));
+                insertPiece(game);
+                int cleared = piecePosee(game->map, game->p);
+                if (cleared != 0)
+                {
+                    nbLignes += cleared;
+                    updateLevel();
+                    ajouteScore(cleared);
+                }
+                changePiece(game);
+                if (!verifCollision(game->map, game->p))
+                {
+                    run = 0;
+                    if (score > highScore)
+                        updateHighScore("highscore.txt", score);
+                    printf("Aww man you topped out rip D: Good game!\n");
+                }
+            }
+            else
+                clock_begin = clock_end;
+        }
+        else
+        {
+            clock_end = clock();
+        }
+
         event(SDL_CONTROLLER, game, &run);
 
         insertPiece(game);

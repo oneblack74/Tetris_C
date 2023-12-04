@@ -1,0 +1,25 @@
+{
+    "files.associations": {
+        "array": "c",
+        "hash_map": "c",
+        "hash_set": "c",
+        "deque": "c",
+        "list": "c",
+        "string": "c",
+        "unordered_map": "c",
+        "unordered_set": "c",
+        "vector": "c",
+        "string_view": "c",
+        "initializer_list": "c",
+        "valarray": "c",
+        "__bit_reference": "c",
+        "__hash_table": "c",
+        "__split_buffer": "c",
+        "__tree": "c",
+        "filesystem": "c",
+        "ios": "c",
+        "iterator": "c",
+        "map": "c",
+        "set": "c"
+    }
+}
