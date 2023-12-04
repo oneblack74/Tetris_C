@@ -8,7 +8,7 @@ typedef struct
 {
 	SDL_Window *window;
 	SDL_Renderer *renderer;
-	SDL_Texture **imageTexture;
+	SDL_Texture **tab_texture;
 	int numImages;
 } SdlView;
 

@@ -40,81 +40,41 @@ View *createSdlView(unsigned w, unsigned h)
 		return NULL;
 	}
 
-	sdlView->numImages = 51;
+	sdlView->numImages = 3;
 
 	// Allouez de l'espace pour le tableau de textures
-	sdlView->imageTexture = (SDL_Texture **)malloc(sdlView->numImages * sizeof(SDL_Texture *));
-	if (!sdlView->imageTexture)
+	sdlView->tab_texture = (SDL_Texture **)malloc(sdlView->numImages * sizeof(SDL_Texture *));
+	if (!sdlView->tab_texture)
 	{
 		perror("malloc()");
 		exit(EXIT_FAILURE);
 	}
+	SDL_Surface *imageSurface;
 
-	for (int i = 0; i < 10; ++i)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			char imagePath[30];
-			sprintf(imagePath, "src/img/color_%d%d.png", i, j);
-
-			SDL_Surface *imageSurface = IMG_Load(imagePath);
-			if (!imageSurface)
-			{
-				fprintf(stderr, "Erreur chargement de l'image : %s", SDL_GetError());
-				return NULL;
-			}
-
-			sdlView->imageTexture[i * 3 + j] = SDL_CreateTextureFromSurface(sdlView->renderer, imageSurface);
-			SDL_FreeSurface(imageSurface);
-		}
-	}
-
-	for (int i = 0; i < 10; i++)
-	{
-		char imagePath[30];
-		sprintf(imagePath, "src/img/red_%d.png", i);
-
-		SDL_Surface *imageSurface = IMG_Load(imagePath);
-		if (!imageSurface)
-		{
-			fprintf(stderr, "Erreur chargement de l'image : %s", SDL_GetError());
-			return NULL;
-		}
-
-		sdlView->imageTexture[30 + i] = SDL_CreateTextureFromSurface(sdlView->renderer, imageSurface);
-		SDL_FreeSurface(imageSurface);
-
-		sprintf(imagePath, "src/img/white_%d.png", i);
-
-		imageSurface = IMG_Load(imagePath);
-		if (!imageSurface)
-		{
-			fprintf(stderr, "Erreur chargement de l'image : %s", SDL_GetError());
-			return NULL;
-		}
-
-		sdlView->imageTexture[40 + i] = SDL_CreateTextureFromSurface(sdlView->renderer, imageSurface);
-		SDL_FreeSurface(imageSurface);
-	}
-
-	SDL_Surface *imageSurface = IMG_Load("src/img/background.png");
+	imageSurface = IMG_Load("src/img/background.png");
 	if (!imageSurface)
 	{
 		fprintf(stderr, "Erreur chargement de l'image : %s", SDL_GetError());
 		return NULL;
 	}
-
-	sdlView->imageTexture[50] = SDL_CreateTextureFromSurface(sdlView->renderer, imageSurface);
+	sdlView->tab_texture[0] = SDL_CreateTextureFromSurface(sdlView->renderer, imageSurface);
 	SDL_FreeSurface(imageSurface);
-
-	for (int i = 0; i < sdlView->numImages; i++)
+	imageSurface = IMG_Load("src/img/stats_tilesheet.png");
+	if (!imageSurface)
 	{
-		if (!sdlView->imageTexture[i])
-		{
-			fprintf(stderr, "Erreur création de la texture : %s", SDL_GetError());
-			return NULL;
-		}
+		fprintf(stderr, "Erreur chargement de l'image : %s", SDL_GetError());
+		return NULL;
 	}
+	sdlView->tab_texture[1] = SDL_CreateTextureFromSurface(sdlView->renderer, imageSurface);
+	SDL_FreeSurface(imageSurface);
+	imageSurface = IMG_Load("src/img/tilesheet.png");
+	if (!imageSurface)
+	{
+		fprintf(stderr, "Erreur chargement de l'image : %s", SDL_GetError());
+		return NULL;
+	}
+	sdlView->tab_texture[2] = SDL_CreateTextureFromSurface(sdlView->renderer, imageSurface);
+	SDL_FreeSurface(imageSurface);
 
 	ret->instanciation = sdlView;
 	ret->functions.updateGrid = sdlUpdateView;
@@ -125,15 +85,16 @@ void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *s
 {
 	int ind, cpt = 0;
 	if (strcmp(color, "red") == 0)
-		ind = 30;
+		ind = 3;
 	else
-		ind = 40;
+		ind = 4;
 
 	while (n > 0 && cpt < nb_chiffre)
 	{
 		int chiffre = n % 10;
 		SDL_Rect rect = {x + (nb_chiffre - 1 - cpt) * TAILLE_CEL * SCALE, y, TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
-		SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[ind + chiffre], NULL, &rect);
+		SDL_Rect rect_src = {n * 8, ind * 8, 8, 8};
+		SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[2], &rect_src, &rect);
 		n /= 10;
 		cpt++;
 	}
@@ -141,7 +102,8 @@ void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *s
 	for (cpt; cpt < nb_chiffre; cpt++)
 	{
 		SDL_Rect rect = {x + (nb_chiffre - 1 - cpt) * TAILLE_CEL * SCALE, y, TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
-		SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[ind], NULL, &rect);
+		SDL_Rect rect_src = {n * 8, ind * 8, 8, 8};
+		SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[2], &rect_src, &rect);
 	}
 }
 
@@ -154,7 +116,12 @@ void sdlUpdateView(View *view, GameState *game)
 
 	// afficher le background
 	SDL_Rect rect = {0, 0, 256 * SCALE, 240 * SCALE};
-	SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[50], NULL, &rect);
+	SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[0], NULL, &rect);
+
+	// afficher les stats
+	SDL_Rect rect_src = {(level % 10) * 24, 0, 24, 104};
+	SDL_Rect rect_dst = {24 * SCALE, 93 * SCALE, 24 * SCALE, 104 * SCALE};
+	SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[1], &rect_src, &rect_dst);
 
 	// afficher le plateau de jeu
 	for (int i = 0; i < HEIGHT; i++)
@@ -163,8 +130,9 @@ void sdlUpdateView(View *view, GameState *game)
 		{
 			if (game->map[i * WIDTH + j].a)
 			{
-				SDL_Rect rect = {j * TAILLE_CEL * SCALE + (96 * SCALE), i * TAILLE_CEL * SCALE + (48 * SCALE), TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
-				SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[game->map[i * WIDTH + j].c + (level % 10) * 3], NULL, &rect);
+				SDL_Rect rect_src = {8 * (level % 10), game->map[i * WIDTH + j].c * 8, 8, 8};
+				SDL_Rect rect_dst = {j * TAILLE_CEL * SCALE + (96 * SCALE), i * TAILLE_CEL * SCALE + (48 * SCALE), TAILLE_CEL * SCALE, TAILLE_CEL * SCALE};
+				SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[2], &rect_src, &rect_dst);
 			}
 		}
 	}
@@ -197,7 +165,8 @@ void sdlUpdateView(View *view, GameState *game)
 		rect.w = TAILLE_CEL * SCALE;
 		rect.h = TAILLE_CEL * SCALE;
 
-		SDL_RenderCopy(sdlView->renderer, sdlView->imageTexture[game->nextBox.c + (level % 10) * 3], NULL, &rect);
+		SDL_Rect rect_src = {(level % 10) * 8, game->nextBox.c * 8, 8, 8};
+		SDL_RenderCopy(sdlView->renderer, sdlView->tab_texture[2], &rect_src, &rect);
 	}
 
 	// afficher top
@@ -228,12 +197,12 @@ void destroySdlView(View *view)
 
 	for (int i = 0; i < sdlView->numImages; ++i)
 	{
-		SDL_DestroyTexture(sdlView->imageTexture[i]);
+		SDL_DestroyTexture(sdlView->tab_texture[i]);
 	}
 	SDL_DestroyRenderer(sdlView->renderer);
 	SDL_DestroyWindow(sdlView->window);
 
-	free(sdlView->imageTexture);
+	free(sdlView->tab_texture);
 
 	free(sdlView);
 	free(view);
