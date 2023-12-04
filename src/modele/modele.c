@@ -13,7 +13,7 @@ const int HEIGHT = 20;
 const int TAILLE_CEL = 8;
 const int SCALE = 3;
 
-int level = 0;
+int level = 19;
 int score = 0;
 int highScore = 0;
 int nbLignes = 0;
@@ -477,6 +477,75 @@ void changePiece(GameState *game)
     stats[game->p.type]++;
 }
 
+unsigned long getSpeed()
+{
+    switch (level)
+    {
+    case 0:
+        return 2400;
+        break;
+    case 1:
+        return 2150;
+        break;
+    case 2:
+        return 1900;
+        break;
+    case 3:
+        return 1650;
+        break;
+    case 4:
+        return 1400;
+        break;
+    case 5:
+        return 1150;
+        break;
+    case 6:
+        return 900;
+        break;
+    case 7:
+        return 650;
+        break;
+    case 8:
+        return 400;
+        break;
+    case 9:
+        return 300;
+        break;
+    case 10:
+    case 11:
+    case 12:
+        return 250;
+        break;
+    case 13:
+    case 14:
+    case 15:
+        return 200;
+        break;
+    case 16:
+    case 17:
+    case 18:
+        return 150;
+        break;
+    case 19:
+    case 20:
+    case 21:
+    case 22:
+    case 23:
+    case 24:
+    case 25:
+    case 26:
+    case 27:
+    case 28:
+    case 29:
+        return 100;
+        break;
+
+    default:
+        break;
+    }
+    return 50;
+}
+
 void gameLoop(GameState *game)
 {
     View *view = createView(SDL_VIEW);
@@ -485,7 +554,7 @@ void gameLoop(GameState *game)
     int cleared;
     int run = 1;
     int ch;
-    unsigned long speed = 2400; // en milliseconde
+    unsigned long speed = getSpeed(); // en milliseconde
 
     clock_t clock_end = clock();
     clock_t clock_begin = clock_end;
@@ -510,6 +579,7 @@ void gameLoop(GameState *game)
                     nbLignes += cleared;
                     updateLevel();
                     ajouteScore(cleared);
+                    speed = getSpeed();
                 }
                 changePiece(game);
                 if (!verifCollision(game->map, game->p))
