@@ -603,6 +603,7 @@ void gameLoop(View SDL, GameState *game)
         time_ms = timespecDiff(&cur, &curTMP);
         if (time_ms >= speed)
         {
+            int level_tmp = level;
             int ret = moveDown(game);
             if (ret >= 0)
             {
@@ -613,6 +614,9 @@ void gameLoop(View SDL, GameState *game)
             }
             timespec_get(&cur, TIME_UTC);
             curTMP = cur;
+
+            if (level != level_tmp)
+                SDL.functions->play_sound(&SDL, 8);
         }
 
         SDL.functions->event(&SDL, game);
