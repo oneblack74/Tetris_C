@@ -6,7 +6,6 @@
 #include <unistd.h>
 
 #include "modele.h"
-#include "view/view.h"
 #include "controller/controller.h"
 
 const int WIDTH = 10;
@@ -551,10 +550,8 @@ unsigned int timespecDiff(const struct timespec *time1, const struct timespec *t
     return ((time1->tv_sec - time0->tv_sec) * 1000 + (time1->tv_nsec - time0->tv_nsec) / 1000000);
 }
 
-void gameLoop(GameState *game)
+void gameLoop(View SDL, GameState *game)
 {
-    View *view = createView(SDL_VIEW);
-
     highScore = getHighScore("highscore.txt");
     int cleared;
     int run = 1;
@@ -569,7 +566,7 @@ void gameLoop(GameState *game)
     unsigned int time_ms = 0;
 
     insertPiece(game);
-    updateView(SDL_VIEW, view, game);
+    SDL.functions->updateView(&SDL, game);
     removePiece(game);
 
     while (run)
@@ -593,7 +590,7 @@ void gameLoop(GameState *game)
                     speed = getSpeed();
                     changePiece(game);
                     insertPiece(game);
-                    updateView(SDL_VIEW, view, game);
+                    SDL.functions->updateView(&SDL, game);
                     removePiece(game);
                     usleep(0.2 * 1e6);
                 }
@@ -617,10 +614,10 @@ void gameLoop(GameState *game)
         event(SDL_CONTROLLER, game, &run);
 
         insertPiece(game);
-        updateView(SDL_VIEW, view, game);
+        SDL.functions->updateView(&SDL, game);
     }
 
-    destroyView(SDL_VIEW, view);
+    SDL.functions->destroyView(&SDL);
 
     free(game->map);
     free(game->listePiece);

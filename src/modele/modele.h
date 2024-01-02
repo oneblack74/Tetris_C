@@ -1,6 +1,8 @@
 #ifndef MODELE_H
 #define MODELE_H
 
+#include "view/view.h"
+
 extern const int WIDTH;
 extern const int HEIGHT;
 extern const int PIECE_START_X;
@@ -13,6 +15,8 @@ extern int level;
 extern int score;
 extern int highScore;
 extern int stats[];
+
+typedef struct View View;
 
 // structure qui contient les coordonnées x, y d'un block
 typedef struct Block
@@ -68,7 +72,7 @@ void updateHighScore(char *file, int high);
 void updateLevel();
 int piecePosee(Cel *map, Piece p);
 void ncursesAffiche(Cel *map, Piece nextBox);
-void gameLoop(GameState *game);
+void gameLoop(View SDL, GameState *game);
 void changePiece(GameState *game);
 void ajouteScore(int nb);
 

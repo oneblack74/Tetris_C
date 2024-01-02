@@ -1,22 +1,21 @@
 #include "view.h"
 #include "sdlView.h"
 
-/**
- * @brief createView implementation. */
-View *createView(TypeView typeView)
+View sdlView_init(unsigned w, unsigned h)
 {
-	if (typeView == SDL_VIEW)
-		return createSdlView(256 * SCALE, 240 * SCALE);
-} // createView
-
-void updateView(TypeView typeView, View *view, GameState *game)
-{
-	if (typeView == SDL_VIEW)
-		sdlUpdateView(view, game);
+	View view;
+	view.typeView = SDL_VIEW;
+	view.instanciation = createSdlView(w, h);
+	Functions_View *f = (Functions_View *)malloc(sizeof(Functions_View));
+	if (!f)
+	{
+		perror("malloc()\n");
+		exit(EXIT_FAILURE);
+	}
+	view.functions = f;
+	view.functions->updateView = sdlUpdateView;
+	view.functions->destroyView = destroySdlView;
+	view.functions->play_sound = play_sound;
+	return view;
 }
-
-void destroyView(TypeView typeView, View *view)
-{
-	if (typeView == SDL_VIEW)
-		destroySdlView(view);
-}
+View ncursesView_init() {}

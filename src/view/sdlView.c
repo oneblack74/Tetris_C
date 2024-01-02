@@ -3,22 +3,14 @@
 
 #include "sdlView.h"
 #include "modele/modele.h"
-#include <SDL2/SDL_image.h>
 
 // 24 - 93
 
 /**
  * @brief createSdlView implementation.
  */
-View *createSdlView(unsigned w, unsigned h)
+SdlView *createSdlView(unsigned w, unsigned h)
 {
-	View *ret = (View *)malloc(sizeof(View));
-	if (!ret)
-	{
-		perror("malloc()");
-		exit(EXIT_FAILURE);
-	}
-
 	SdlView *sdlView = (SdlView *)malloc(sizeof(SdlView));
 	if (!sdlView)
 	{
@@ -27,7 +19,7 @@ View *createSdlView(unsigned w, unsigned h)
 	}
 
 	/* Initialise SDL */
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0)
 	{
 		SDL_Log("Erreur lors de l'initialisation de la SDL : %s", SDL_GetError());
 		exit(EXIT_FAILURE);
@@ -40,10 +32,14 @@ View *createSdlView(unsigned w, unsigned h)
 		return NULL;
 	}
 
+	sdlView->numSounds = 9;
 	sdlView->numImages = 3;
 
-	// Allouez de l'espace pour le tableau de textures
-	sdlView->tab_texture = (SDL_Texture **)malloc(sdlView->numImages * sizeof(SDL_Texture *));
+	// Allouez de l'espace pour le tableau des sonds
+	sdlView->tab_sounds = (SDL_MixAudio *)malloc(sdlView.)
+
+						  // Allouez de l'espace pour le tableau de textures
+						  sdlView->tab_texture = (SDL_Texture **)malloc(sdlView->numImages * sizeof(SDL_Texture *));
 	if (!sdlView->tab_texture)
 	{
 		perror("malloc()");
@@ -76,9 +72,7 @@ View *createSdlView(unsigned w, unsigned h)
 	sdlView->tab_texture[2] = SDL_CreateTextureFromSurface(sdlView->renderer, imageSurface);
 	SDL_FreeSurface(imageSurface);
 
-	ret->instanciation = sdlView;
-	ret->functions.updateGrid = sdlUpdateView;
-	return ret;
+	return sdlView;
 } // createSdlView
 
 void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *sdlView)
@@ -109,8 +103,7 @@ void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *s
 
 void sdlUpdateView(View *view, GameState *game)
 {
-	SdlView *sdlView = (SdlView *)(view->instanciation);
-
+	SdlView *sdlView = (SdlView *)view->instanciation;
 	// Effacez le rendu précédent
 	SDL_RenderClear(sdlView->renderer);
 
@@ -193,8 +186,7 @@ void sdlUpdateView(View *view, GameState *game)
 
 void destroySdlView(View *view)
 {
-	SdlView *sdlView = (SdlView *)(view->instanciation);
-
+	SdlView *sdlView = (SdlView *)view->instanciation;
 	for (int i = 0; i < sdlView->numImages; ++i)
 	{
 		SDL_DestroyTexture(sdlView->tab_texture[i]);
@@ -208,4 +200,9 @@ void destroySdlView(View *view)
 	free(view);
 
 	SDL_Quit();
+}
+
+void play_sound(View *view, int ind)
+{
+	SdlView *sdlView = (SdlView *)view->instanciation;
 }

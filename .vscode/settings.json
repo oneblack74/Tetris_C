@@ -20,6 +20,7 @@
         "ios": "c",
         "iterator": "c",
         "map": "c",
-        "set": "c"
+        "set": "c",
+        "stdio.h": "c"
     }
 }

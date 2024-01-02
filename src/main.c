@@ -2,6 +2,7 @@
 #include <time.h>
 
 #include "modele/modele.h"
+#include "view/view.h"
 
 int main(int argc, char **argv)
 {
@@ -10,7 +11,10 @@ int main(int argc, char **argv)
 	GameState *game = (GameState *)malloc(sizeof(GameState));
 
 	initModele(game);
-	gameLoop(game);
+
+	View SDL = sdlView_init(256 * SCALE, 240 * SCALE);
+
+	gameLoop(SDL, game);
 
 	return EXIT_SUCCESS;
 } // main
