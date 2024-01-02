@@ -590,6 +590,8 @@ void gameLoop(View SDL, GameState *game)
                     speed = getSpeed();
                     changePiece(game);
                     insertPiece(game);
+                    if (cleared != 4)
+                        SDL.functions->play_sound(&SDL, 0);
                     SDL.functions->updateView(&SDL, game);
                     removePiece(game);
                     usleep(0.2 * 1e6);

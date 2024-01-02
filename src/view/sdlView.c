@@ -25,21 +25,34 @@ SdlView *createSdlView(unsigned w, unsigned h)
 		exit(EXIT_FAILURE);
 	}
 
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) != 0)
+	{
+		printf("SDL_mixer initialisation failed: %s\n", Mix_GetError());
+		exit(EXIT_FAILURE);
+	}
+
 	SDL_CreateWindowAndRenderer(w, h, SDL_INIT_VIDEO, &sdlView->window, &sdlView->renderer);
 	if (!sdlView->window || !sdlView->renderer)
 	{
 		fprintf(stderr, "Erreur SDL_CreateWindow : %s", SDL_GetError());
-		return NULL;
+		exit(EXIT_FAILURE);
 	}
 
 	sdlView->numSounds = 9;
 	sdlView->numImages = 3;
 
 	// Allouez de l'espace pour le tableau des sonds
-	sdlView->tab_sounds = (SDL_MixAudio *)malloc(sdlView.)
+	sdlView->tab_sounds = (Mix_Chunk **)malloc(sizeof(Mix_Chunk *) * sdlView->numSounds);
+	if (!sdlView->tab_sounds)
+	{
+		perror("malloc()");
+		exit(EXIT_FAILURE);
+	}
 
-						  // Allouez de l'espace pour le tableau de textures
-						  sdlView->tab_texture = (SDL_Texture **)malloc(sdlView->numImages * sizeof(SDL_Texture *));
+	sdlView->tab_sounds[0] = Mix_LoadWAV("src/sound/Clear_1_to_3_Lines.wav");
+
+	// Allouez de l'espace pour le tableau de textures
+	sdlView->tab_texture = (SDL_Texture **)malloc(sdlView->numImages * sizeof(SDL_Texture *));
 	if (!sdlView->tab_texture)
 	{
 		perror("malloc()");
@@ -205,4 +218,6 @@ void destroySdlView(View *view)
 void play_sound(View *view, int ind)
 {
 	SdlView *sdlView = (SdlView *)view->instanciation;
+
+	Mix_PlayChannel(-1, sdlView->tab_sounds[ind], 0);
 }
