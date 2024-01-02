@@ -6,7 +6,6 @@
 #include <unistd.h>
 
 #include "modele.h"
-#include "controller/controller.h"
 
 const int WIDTH = 10;
 const int HEIGHT = 20;
@@ -590,7 +589,9 @@ void gameLoop(View SDL, GameState *game)
                     speed = getSpeed();
                     changePiece(game);
                     insertPiece(game);
-                    if (cleared != 4)
+                    if (cleared == 4)
+                        SDL.functions->play_sound(&SDL, 1);
+                    else
                         SDL.functions->play_sound(&SDL, 0);
                     SDL.functions->updateView(&SDL, game);
                     removePiece(game);
@@ -613,7 +614,7 @@ void gameLoop(View SDL, GameState *game)
             }
         }
 
-        event(SDL_CONTROLLER, game, &run);
+        SDL.functions->event(game, &run);
 
         insertPiece(game);
         SDL.functions->updateView(&SDL, game);

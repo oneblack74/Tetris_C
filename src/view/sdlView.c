@@ -50,6 +50,23 @@ SdlView *createSdlView(unsigned w, unsigned h)
 	}
 
 	sdlView->tab_sounds[0] = Mix_LoadWAV("src/sound/Clear_1_to_3_Lines.wav");
+	sdlView->tab_sounds[1] = Mix_LoadWAV("src/sound/Clear_Tetris.wav");
+	sdlView->tab_sounds[2] = Mix_LoadWAV("src/sound/Move_Piece.wav");
+	sdlView->tab_sounds[3] = Mix_LoadWAV("src/sound/MoveMenu.wav");
+	sdlView->tab_sounds[4] = Mix_LoadWAV("src/sound/Piece_Pose.wav");
+	sdlView->tab_sounds[5] = Mix_LoadWAV("src/sound/Rotate_Piece.wav");
+	sdlView->tab_sounds[6] = Mix_LoadWAV("src/sound/Top_Out_End.wav");
+	sdlView->tab_sounds[7] = Mix_LoadWAV("src/sound/Transition_Level.wav");
+	sdlView->tab_sounds[8] = Mix_LoadWAV("src/sound/Valide_In_Menu.wav");
+
+	for (int i = 0; i < sdlView->numSounds; i++)
+	{
+		if (sdlView->tab_sounds[i] == NULL)
+		{
+			printf("Failed to load sound number %d: %s\n", i, Mix_GetError());
+			exit(EXIT_FAILURE);
+		}
+	}
 
 	// Allouez de l'espace pour le tableau de textures
 	sdlView->tab_texture = (SDL_Texture **)malloc(sdlView->numImages * sizeof(SDL_Texture *));
@@ -204,10 +221,16 @@ void destroySdlView(View *view)
 	{
 		SDL_DestroyTexture(sdlView->tab_texture[i]);
 	}
+	for (int i = 0; i < sdlView->numSounds; ++i)
+	{
+		Mix_FreeChunk(sdlView->tab_sounds[i]);
+	}
+
 	SDL_DestroyRenderer(sdlView->renderer);
 	SDL_DestroyWindow(sdlView->window);
 
 	free(sdlView->tab_texture);
+	free(sdlView->tab_sounds);
 
 	free(sdlView);
 	free(view);
@@ -220,4 +243,76 @@ void play_sound(View *view, int ind)
 	SdlView *sdlView = (SdlView *)view->instanciation;
 
 	Mix_PlayChannel(-1, sdlView->tab_sounds[ind], 0);
+}
+
+void sdlEvent(GameState *game, int *run)
+{
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		if (event.type == SDL_QUIT)
+		{
+			*run = 0;
+		}
+		if (event.type == SDL_KEYDOWN)
+		{
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_DOWN:
+				moveDown(game->map, &(game->p));
+				if (!verifCollision(game->map, game->p))
+				{
+					moveUp(game->map, &(game->p));
+					insertPiece(game);
+					int cleared = piecePosee(game->map, game->p);
+					if (cleared != 0)
+					{
+						nbLignes += cleared;
+						updateLevel();
+						ajouteScore(cleared);
+					}
+					changePiece(game);
+					if (!verifCollision(game->map, game->p))
+					{
+						*run = 0;
+						if (score > highScore)
+							updateHighScore("highscore.txt", score);
+						printf("Aww man you topped out rip D: Good game!\n");
+					}
+				}
+				break;
+
+			case SDLK_RIGHT:
+				moveRight(game->map, &(game->p));
+				if (!verifCollision(game->map, game->p))
+					moveLeft(game->map, &(game->p));
+				break;
+
+			case SDLK_LEFT:
+				moveLeft(game->map, &(game->p));
+				if (!verifCollision(game->map, game->p))
+					moveRight(game->map, &(game->p));
+				break;
+
+			case SDLK_q:
+				rotateLeft(game->map, &(game->p));
+				if (!verifCollision(game->map, game->p))
+					rotateRight(game->map, &(game->p));
+				break;
+
+			case SDLK_d:
+				rotateRight(game->map, &(game->p));
+				if (!verifCollision(game->map, game->p))
+					rotateLeft(game->map, &(game->p));
+				break;
+
+			case SDLK_p:
+				*run = 0;
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
 }

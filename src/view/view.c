@@ -16,6 +16,7 @@ View sdlView_init(unsigned w, unsigned h)
 	view.functions->updateView = sdlUpdateView;
 	view.functions->destroyView = destroySdlView;
 	view.functions->play_sound = play_sound;
+	view.functions->event = sdlEvent;
 	return view;
 }
 View ncursesView_init() {}
