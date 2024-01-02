@@ -17,7 +17,7 @@ typedef struct
 	void (*updateView)(View *view, GameState *);
 	void (*destroyView)(View *view);
 	void (*play_sound)(View *view, int);
-	void (*event)(GameState *, int *);
+	void (*event)(View *view, GameState *);
 } Functions_View;
 
 typedef struct View

@@ -21,5 +21,5 @@ void sdlUpdateView(View *view, GameState *gameState);
 void destroySdlView(View *view);
 void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *sdlView);
 void play_sound(View *view, int ind);
-void sdlEvent(GameState *game, int *run);
+void sdlEvent(View *view, GameState *game);
 #endif

@@ -49,6 +49,7 @@ typedef struct GameState
     Piece p;
     Piece nextBox;
     Piece *listePiece;
+    int run;
 } GameState;
 
 void initModele(GameState *game);
@@ -56,7 +57,7 @@ void initListePiece(GameState *game);
 void initMap(GameState *game);
 void insertPiece(GameState *game);
 void removePiece(GameState *game);
-void moveDown(Cel *map, Piece *p);
+int moveDown(GameState *game);
 void moveUp(Cel *map, Piece *p);
 void moveRight(Cel *map, Piece *p);
 void moveLeft(Cel *map, Piece *p);

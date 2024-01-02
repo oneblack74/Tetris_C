@@ -26,6 +26,7 @@ void initModele(GameState *game)
     game->p = game->listePiece[rand() % 7];
     game->nextBox = game->listePiece[rand() % 7];
     stats[game->p.type]++;
+    game->run = 1;
 }
 
 // initialise la liste qui contient les 7 pièces différentes
@@ -173,9 +174,37 @@ void removePiece(GameState *game)
 }
 
 // déplace la pièce vers le bas
-void moveDown(Cel *map, Piece *p)
+int moveDown(GameState *game)
 {
-    p->y++;
+    game->p.y++;
+    if (!verifCollision(game->map, game->p))
+    {
+        moveUp(game->map, &(game->p));
+        insertPiece(game);
+        int cleared = piecePosee(game->map, game->p);
+        if (cleared != 0)
+        {
+            nbLignes += cleared;
+            updateLevel();
+            ajouteScore(cleared);
+            changePiece(game);
+            insertPiece(game);
+            removePiece(game);
+            usleep(0.2 * 1e6);
+        }
+        else
+            changePiece(game);
+        if (!verifCollision(game->map, game->p))
+        {
+            game->run = 0;
+            if (score > highScore)
+                updateHighScore("highscore.txt", score);
+            printf("Aww man you topped out rip D: Good game!\n");
+            usleep(200 * 1e6);
+        }
+        return cleared;
+    }
+    return -1;
 }
 
 // déplace la pièce vers le haut (pour gérer les collisions)
@@ -553,7 +582,6 @@ void gameLoop(View SDL, GameState *game)
 {
     highScore = getHighScore("highscore.txt");
     int cleared;
-    int run = 1;
     int ch;
     updateLevel();
     unsigned int speed = getSpeed(); // en milliseconde
@@ -568,53 +596,26 @@ void gameLoop(View SDL, GameState *game)
     SDL.functions->updateView(&SDL, game);
     removePiece(game);
 
-    while (run)
+    while (game->run)
     {
         removePiece(game);
         timespec_get(&cur, TIME_UTC);
         time_ms = timespecDiff(&cur, &curTMP);
         if (time_ms >= speed)
         {
-            moveDown(game->map, &(game->p));
-            if (!verifCollision(game->map, game->p))
+            int ret = moveDown(game);
+            if (ret >= 0)
             {
-                moveUp(game->map, &(game->p));
-                insertPiece(game);
-                int cleared = piecePosee(game->map, game->p);
-                if (cleared != 0)
-                {
-                    nbLignes += cleared;
-                    updateLevel();
-                    ajouteScore(cleared);
-                    speed = getSpeed();
-                    changePiece(game);
-                    insertPiece(game);
-                    if (cleared == 4)
-                        SDL.functions->play_sound(&SDL, 1);
-                    else
-                        SDL.functions->play_sound(&SDL, 0);
-                    SDL.functions->updateView(&SDL, game);
-                    removePiece(game);
-                    usleep(0.2 * 1e6);
-                }
-                else
-                    changePiece(game);
-                if (!verifCollision(game->map, game->p))
-                {
-                    run = 0;
-                    if (score > highScore)
-                        updateHighScore("highscore.txt", score);
-                    printf("Aww man you topped out rip D: Good game!\n");
-                }
+                if (ret == 4)
+                    SDL.functions->play_sound(&SDL, 1);
+                else if (ret > 0)
+                    SDL.functions->play_sound(&SDL, 0);
             }
-            else
-            {
-                timespec_get(&cur, TIME_UTC);
-                curTMP = cur;
-            }
+            timespec_get(&cur, TIME_UTC);
+            curTMP = cur;
         }
 
-        SDL.functions->event(game, &run);
+        SDL.functions->event(&SDL, game);
 
         insertPiece(game);
         SDL.functions->updateView(&SDL, game);

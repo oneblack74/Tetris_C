@@ -103,7 +103,7 @@ SdlView *createSdlView(unsigned w, unsigned h)
 	SDL_FreeSurface(imageSurface);
 
 	return sdlView;
-} // createSdlView
+}
 
 void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *sdlView)
 {
@@ -226,6 +226,7 @@ void destroySdlView(View *view)
 		Mix_FreeChunk(sdlView->tab_sounds[i]);
 	}
 
+	Mix_CloseAudio();
 	SDL_DestroyRenderer(sdlView->renderer);
 	SDL_DestroyWindow(sdlView->window);
 
@@ -245,40 +246,28 @@ void play_sound(View *view, int ind)
 	Mix_PlayChannel(-1, sdlView->tab_sounds[ind], 0);
 }
 
-void sdlEvent(GameState *game, int *run)
+void sdlEvent(View *view, GameState *game)
 {
+	SdlView *sdlView = (SdlView *)view->instanciation;
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
 		if (event.type == SDL_QUIT)
 		{
-			*run = 0;
+			game->run = 0;
 		}
 		if (event.type == SDL_KEYDOWN)
 		{
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_DOWN:
-				moveDown(game->map, &(game->p));
-				if (!verifCollision(game->map, game->p))
+				int ret = moveDown(game);
+				if (ret >= 0)
 				{
-					moveUp(game->map, &(game->p));
-					insertPiece(game);
-					int cleared = piecePosee(game->map, game->p);
-					if (cleared != 0)
-					{
-						nbLignes += cleared;
-						updateLevel();
-						ajouteScore(cleared);
-					}
-					changePiece(game);
-					if (!verifCollision(game->map, game->p))
-					{
-						*run = 0;
-						if (score > highScore)
-							updateHighScore("highscore.txt", score);
-						printf("Aww man you topped out rip D: Good game!\n");
-					}
+					if (ret == 4)
+						view->functions->play_sound(view, 1);
+					else if (ret > 0)
+						view->functions->play_sound(view, 0);
 				}
 				break;
 
@@ -286,28 +275,36 @@ void sdlEvent(GameState *game, int *run)
 				moveRight(game->map, &(game->p));
 				if (!verifCollision(game->map, game->p))
 					moveLeft(game->map, &(game->p));
+				else
+					view->functions->play_sound(view, 2);
 				break;
 
 			case SDLK_LEFT:
 				moveLeft(game->map, &(game->p));
 				if (!verifCollision(game->map, game->p))
 					moveRight(game->map, &(game->p));
+				else
+					view->functions->play_sound(view, 2);
 				break;
 
 			case SDLK_q:
 				rotateLeft(game->map, &(game->p));
 				if (!verifCollision(game->map, game->p))
 					rotateRight(game->map, &(game->p));
+				else
+					view->functions->play_sound(view, 5);
 				break;
 
 			case SDLK_d:
 				rotateRight(game->map, &(game->p));
 				if (!verifCollision(game->map, game->p))
 					rotateLeft(game->map, &(game->p));
+				else
+					view->functions->play_sound(view, 5);
 				break;
 
 			case SDLK_p:
-				*run = 0;
+				game->run = 0;
 				break;
 
 			default:
