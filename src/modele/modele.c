@@ -13,7 +13,7 @@ const int HEIGHT = 20;
 const int TAILLE_CEL = 8;
 const int SCALE = 3;
 
-int level = 19;
+int level = 2;
 int score = 0;
 int highScore = 0;
 int nbLignes = 0;
@@ -477,54 +477,54 @@ void changePiece(GameState *game)
     stats[game->p.type]++;
 }
 
-unsigned long getSpeed()
+unsigned int getSpeed()
 {
     switch (level)
     {
     case 0:
-        return 2400;
+        return 800;
         break;
     case 1:
-        return 2150;
+        return 717;
         break;
     case 2:
-        return 1900;
+        return 633;
         break;
     case 3:
-        return 1650;
+        return 550;
         break;
     case 4:
-        return 1400;
+        return 467;
         break;
     case 5:
-        return 1150;
+        return 383;
         break;
     case 6:
-        return 900;
+        return 300;
         break;
     case 7:
-        return 650;
+        return 217;
         break;
     case 8:
-        return 400;
+        return 133;
         break;
     case 9:
-        return 300;
+        return 100;
         break;
     case 10:
     case 11:
     case 12:
-        return 250;
+        return 83;
         break;
     case 13:
     case 14:
     case 15:
-        return 200;
+        return 67;
         break;
     case 16:
     case 17:
     case 18:
-        return 150;
+        return 50;
         break;
     case 19:
     case 20:
@@ -537,13 +537,18 @@ unsigned long getSpeed()
     case 27:
     case 28:
     case 29:
-        return 100;
+        return 33;
         break;
 
     default:
         break;
     }
-    return 50;
+    return 17;
+}
+
+unsigned int timespecDiff(const struct timespec *time1, const struct timespec *time0)
+{
+    return ((time1->tv_sec - time0->tv_sec) * 1000 + (time1->tv_nsec - time0->tv_nsec) / 1000000);
 }
 
 void gameLoop(GameState *game)
@@ -554,10 +559,13 @@ void gameLoop(GameState *game)
     int cleared;
     int run = 1;
     int ch;
-    unsigned long speed = getSpeed(); // en milliseconde
+    unsigned int speed = getSpeed(); // en milliseconde
 
-    clock_t clock_end = clock();
-    clock_t clock_begin = clock_end;
+    struct timespec cur;
+    timespec_get(&cur, TIME_UTC);
+    struct timespec curTMP = cur;
+
+    unsigned int time_ms = 0;
 
     insertPiece(game);
     updateView(SDL_VIEW, view, game);
@@ -566,7 +574,9 @@ void gameLoop(GameState *game)
     while (run)
     {
         removePiece(game);
-        if (((clock_end - clock_begin) * 1000 / CLOCKS_PER_SEC) >= speed)
+        timespec_get(&cur, TIME_UTC);
+        time_ms = timespecDiff(&cur, &curTMP);
+        if (time_ms >= speed)
         {
             moveDown(game->map, &(game->p));
             if (!verifCollision(game->map, game->p))
@@ -591,11 +601,10 @@ void gameLoop(GameState *game)
                 }
             }
             else
-                clock_begin = clock_end;
-        }
-        else
-        {
-            clock_end = clock();
+            {
+                timespec_get(&cur, TIME_UTC);
+                curTMP = cur;
+            }
         }
 
         event(SDL_CONTROLLER, game, &run);
