@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include <SDL2/SDL.h>
+#include <unistd.h>
 
 #include "modele.h"
 #include "view/view.h"
@@ -334,16 +335,16 @@ int verifDeleteLine(Cel *map, int y)
     return 1;
 }
 
-void mapDown(Cel *map, int y, int cpt)
+void mapDown(Cel *map, int y)
 {
-    for (int i = y; i >= cpt; i--)
+    for (int i = y; i >= 1; i--)
     {
         for (int j = 0; j < WIDTH; j++)
         {
-            map[i * WIDTH + j] = map[(i - cpt) * WIDTH + j];
+            map[i * WIDTH + j] = map[(i - 1) * WIDTH + j];
         }
     }
-    for (int i = 0; i < cpt; i++)
+    for (int i = 0; i < 1; i++)
     {
         for (int j = 0; j < WIDTH; j++)
         {
@@ -446,7 +447,10 @@ void ajouteScore(int nb)
 // à modif selon le level start ultérieurement
 void updateLevel()
 {
-    level = nbLignes / 10;
+    if (nbLignes / 10 >= level)
+    {
+        level = nbLignes / 10;
+    }
 }
 
 int piecePosee(Cel *map, Piece p)
@@ -459,13 +463,9 @@ int piecePosee(Cel *map, Piece p)
         {
             cpt++;
             deleteLine(map, y);
-
-            if (y > yMax)
-                yMax = y;
+            mapDown(map, y);
         }
     }
-    if (cpt)
-        mapDown(map, yMax, cpt);
     return cpt;
 }
 
@@ -559,6 +559,7 @@ void gameLoop(GameState *game)
     int cleared;
     int run = 1;
     int ch;
+    updateLevel();
     unsigned int speed = getSpeed(); // en milliseconde
 
     struct timespec cur;
@@ -590,8 +591,14 @@ void gameLoop(GameState *game)
                     updateLevel();
                     ajouteScore(cleared);
                     speed = getSpeed();
+                    changePiece(game);
+                    insertPiece(game);
+                    updateView(SDL_VIEW, view, game);
+                    removePiece(game);
+                    usleep(0.2 * 1e6);
                 }
-                changePiece(game);
+                else
+                    changePiece(game);
                 if (!verifCollision(game->map, game->p))
                 {
                     run = 0;

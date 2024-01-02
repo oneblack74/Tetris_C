@@ -62,7 +62,7 @@ void deleteLine(Cel *map, int y);
 void affiche(Cel *map, Piece nextBox);
 int verifCollision(Cel *map, Piece p);
 int verifDeleteLine(Cel *map, int y);
-void mapDown(Cel *map, int y, int cpt);
+void mapDown(Cel *map, int y);
 int getHighScore(char *file);
 void updateHighScore(char *file, int high);
 void updateLevel();
