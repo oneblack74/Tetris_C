@@ -12,7 +12,7 @@ const int HEIGHT = 20;
 const int TAILLE_CEL = 8;
 
 int SCALE = 3;
-int level = 2;
+int level = 0;
 int score = 0;
 int highScore = 0;
 int nbLignes = 0;
@@ -199,8 +199,9 @@ int moveDown(GameState *game)
             game->run = 0;
             if (score > highScore)
                 updateHighScore("highscore.txt", score);
+            printf("Your score: %d\n", highScore);
             printf("Aww man you topped out rip D: Good game!\n");
-            usleep(200 * 1e6);
+            usleep(200 * 1e3);
         }
         return cleared;
     }
@@ -482,17 +483,17 @@ void updateLevel()
 
 int piecePosee(Cel *map, Piece p)
 {
-    int cpt = 0, yMax = -1;
-    for (int i = 0; i < 4; i++)
+    int cpt = 0;
+    for (int i = 0; i < HEIGHT; i++)
     {
-        int y = p.y + p.b[i].y;
-        if (verifDeleteLine(map, y))
+        if (verifDeleteLine(map, i))
         {
             cpt++;
-            deleteLine(map, y);
-            mapDown(map, y);
+            deleteLine(map, i);
+            mapDown(map, i);
         }
     }
+
     return cpt;
 }
 

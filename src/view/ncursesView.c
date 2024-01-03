@@ -45,6 +45,7 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->level, 4, 5, 'L');
 
     div = 100;
+    printf("%d\n", highScore);
     for (int i = 1; i < 3; i++)
     {
         div /= 10;
@@ -111,16 +112,37 @@ void updateNcursesView(View *view, GameState *game)
             }
         }
     }
-    refresh();
-    wrefresh(ncursesView->board);
 
-    int div = 1000000;
+    int div = 1000;
+    for (int i = 1; i < 4; i++)
+    {
+        div /= 10;
+        mvwaddch(ncursesView->level, 2, i, ((nbLignes / div) % 10) + '0');
+    }
+
+    div = 1000;
+    for (int i = 1; i < 4; i++)
+    {
+        div /= 10;
+        mvwaddch(ncursesView->level, 2, i, ((nbLignes / div) % 10) + '0');
+    }
+
+    div = 1000000;
     for (int i = 1; i < 7; i++)
     {
         div /= 10;
         mvwaddch(ncursesView->score, 5, i, ((score / div) % 10) + '0');
     }
+
+    div = 1000000;
+    for (int i = 1; i < 7; i++)
+    {
+        div /= 10;
+        mvwaddch(ncursesView->score, 2, i, ((highScore / div) % 10) + '0');
+    }
     refresh();
+    wrefresh(ncursesView->board);
+    wrefresh(ncursesView->level);
     wrefresh(ncursesView->score);
 }
 
@@ -178,14 +200,7 @@ void ncursesEvent(View *view, GameState *game)
         switch (ch)
         {
         case KEY_DOWN:
-            int ret = moveDown(game);
-            if (ret >= 0)
-            {
-                if (ret == 4)
-                    view->functions->play_sound(view, 1);
-                else if (ret > 0)
-                    view->functions->play_sound(view, 0);
-            }
+            moveDown(game);
             break;
 
         case KEY_RIGHT:
