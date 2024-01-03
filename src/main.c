@@ -12,9 +12,10 @@ int main(int argc, char **argv)
 
 	initModele(game);
 
-	View SDL = sdlView_init(256 * SCALE, 240 * SCALE);
+	// View SDL = sdlView_init(256 * SCALE, 240 * SCALE);
+	View Ncurses = ncursesView_init();
 
-	gameLoop(SDL, game);
+	gameLoop(Ncurses, Ncurses, game);
 
 	return EXIT_SUCCESS;
 } // main

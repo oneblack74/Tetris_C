@@ -13,9 +13,9 @@ typedef struct
     WINDOW *level;
 } NcursesView;
 
-View *createNcursesView();
-void updateNcursesView(View *view, GameState *gameState);
+NcursesView *createNcursesView();
+void updateNcursesView(View *view, GameState *game);
 void destroyNcursesView(View *view);
-void ncursesEvent(GameState *game, int *run);
+void ncursesEvent(View *view, GameState *game);
 
 #endif

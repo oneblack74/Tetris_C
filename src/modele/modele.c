@@ -563,7 +563,6 @@ unsigned int getSpeed()
     case 26:
     case 27:
     case 28:
-    case 29:
         return 33;
         break;
 
@@ -578,8 +577,9 @@ unsigned int timespecDiff(const struct timespec *time1, const struct timespec *t
     return ((time1->tv_sec - time0->tv_sec) * 1000 + (time1->tv_nsec - time0->tv_nsec) / 1000000);
 }
 
-void gameLoop(View SDL, GameState *game)
+void gameLoop(View SDL, View Ncurses, GameState *game)
 {
+    View *view = &Ncurses;
     highScore = getHighScore("highscore.txt");
     int cleared;
     int ch;
@@ -608,24 +608,24 @@ void gameLoop(View SDL, GameState *game)
             if (ret >= 0)
             {
                 if (ret == 4)
-                    SDL.functions->play_sound(&SDL, 1);
+                    view->functions->play_sound(view, 1);
                 else if (ret > 0)
-                    SDL.functions->play_sound(&SDL, 0);
+                    view->functions->play_sound(view, 0);
             }
             timespec_get(&cur, TIME_UTC);
             curTMP = cur;
 
             if (level != level_tmp)
-                SDL.functions->play_sound(&SDL, 8);
+                view->functions->play_sound(view, 8);
         }
 
-        SDL.functions->event(&SDL, game);
+        view->functions->event(view, game);
 
         insertPiece(game);
-        SDL.functions->updateView(&SDL, game);
+        view->functions->updateView(view, game);
     }
 
-    SDL.functions->destroyView(&SDL);
+    view->functions->destroyView(view);
 
     free(game->map);
     free(game->listePiece);

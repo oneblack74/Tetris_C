@@ -3,7 +3,7 @@ TARGET_EXEC ?= tetris
 BUILD_DIR ?= build
 SRC_DIRS ?= src
 
-SRCS := src/main.c src/modele/modele.c src/view/sdlView.c src/view/view.c
+SRCS := src/main.c src/modele/modele.c src/view/sdlView.c src/view/view.c src/view/ncursesView.c
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 

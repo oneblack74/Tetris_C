@@ -4,7 +4,7 @@
 #include "ncursesView.h"
 #include "modele/modele.h"
 
-View *createNcursesView()
+NcursesView *createNcursesView()
 {
     NcursesView *ncursesView = (NcursesView *)malloc(sizeof(NcursesView));
     if (!ncursesView)
@@ -14,27 +14,62 @@ View *createNcursesView()
     }
 
     initscr();
+    cbreak();
+    noecho();
+    timeout(0);
+    keypad(stdscr, TRUE);
+    curs_set(0);
 
-    ncursesView->board = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
-    ncursesView->level = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
-    ncursesView->next = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
-    ncursesView->score = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
-    ncursesView->stats = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
+    ncursesView->board = newwin(22, 22, 0, 0);
+    // ncursesView->level = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
+    // ncursesView->next = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
+    // ncursesView->score = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
+    // ncursesView->stats = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
     box(ncursesView->board, ACS_VLINE, ACS_HLINE);
-    box(ncursesView->level, ACS_VLINE, ACS_HLINE);
-    box(ncursesView->next, ACS_VLINE, ACS_HLINE);
-    box(ncursesView->score, ACS_VLINE, ACS_HLINE);
-    box(ncursesView->stats, ACS_VLINE, ACS_HLINE);
+    // box(ncursesView->level, ACS_VLINE, ACS_HLINE);
+    // box(ncursesView->next, ACS_VLINE, ACS_HLINE);
+    // box(ncursesView->score, ACS_VLINE, ACS_HLINE);
+    // box(ncursesView->stats, ACS_VLINE, ACS_HLINE);
+
+    return ncursesView;
 }
 
-void updateNcursesView(View *view, GameState *gameState)
+void updateNcursesView(View *view, GameState *game)
 {
+    NcursesView *ncursesView = (NcursesView *)view->instanciation;
+    for (int i = 0; i < HEIGHT; i++)
+    {
+        for (int j = 0; j < WIDTH; j++)
+        {
+            if (game->map[i * WIDTH + j].a)
+            {
+                mvwaddch(ncursesView->board, i + 1, (j * 2) + 1, '[');
+                mvwaddch(ncursesView->board, i + 1, (j * 2) + 2, ']');
+            }
+            else
+            {
+                mvwaddch(ncursesView->board, i + 1, (j * 2) + 1, ' ');
+                mvwaddch(ncursesView->board, i + 1, (j * 2) + 2, ' ');
+            }
+        }
+    }
+    refresh();
+    wrefresh(ncursesView->board);
 }
 
 void destroyNcursesView(View *view)
 {
     NcursesView *ncursesView = (NcursesView *)view->instanciation;
 
+    for (int i = 0; i < HEIGHT; i++)
+    {
+        for (int j = 0; j < WIDTH; j++)
+        {
+
+            mvwaddch(ncursesView->board, i + 1, (j * 2) + 1, ' ');
+            mvwaddch(ncursesView->board, i + 1, (j * 2) + 2, ' ');
+        }
+    }
     wborder(ncursesView->board, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     wrefresh(ncursesView->board);
     delwin(ncursesView->board);
@@ -58,34 +93,21 @@ void destroyNcursesView(View *view)
     free(ncursesView);
 }
 
-void ncursesEvent(GameState *game, int *run)
+void ncursesEvent(View *view, GameState *game)
 {
     int ch;
-    while ((ch = getch()) != KEY_p)
+    while ((ch = getch()) != ERR)
     {
         switch (ch)
         {
         case KEY_DOWN:
-            moveDown(game->map, &(game->p));
-            if (!verifCollision(game->map, game->p))
+            int ret = moveDown(game);
+            if (ret >= 0)
             {
-                moveUp(game->map, &(game->p));
-                insertPiece(game);
-                int cleared = piecePosee(game->map, game->p);
-                if (cleared != 0)
-                {
-                    nbLignes += cleared;
-                    updateLevel();
-                    ajouteScore(cleared);
-                }
-                changePiece(game);
-                if (!verifCollision(game->map, game->p))
-                {
-                    *run = 0;
-                    if (score > highScore)
-                        updateHighScore("highscore.txt", score);
-                    printf("Aww man you topped out rip D: Good game!\n");
-                }
+                if (ret == 4)
+                    view->functions->play_sound(view, 1);
+                else if (ret > 0)
+                    view->functions->play_sound(view, 0);
             }
             break;
 
@@ -101,20 +123,20 @@ void ncursesEvent(GameState *game, int *run)
                 moveRight(game->map, &(game->p));
             break;
 
-        case KEY_q:
+        case 'q':
             rotateLeft(game->map, &(game->p));
             if (!verifCollision(game->map, game->p))
                 rotateRight(game->map, &(game->p));
             break;
 
-        case KEY_d:
+        case 'd':
             rotateRight(game->map, &(game->p));
             if (!verifCollision(game->map, game->p))
                 rotateLeft(game->map, &(game->p));
             break;
 
-        case KEY_p:
-            *run = 0;
+        case 'p':
+            game->run = 0;
             break;
 
         default:
