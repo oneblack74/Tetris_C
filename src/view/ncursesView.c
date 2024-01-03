@@ -20,15 +20,73 @@ NcursesView *createNcursesView()
     keypad(stdscr, TRUE);
     curs_set(0);
 
-    ncursesView->board = newwin(22, 22, 0, 0);
-    // ncursesView->level = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
+    // board
+    ncursesView->board = subwin(stdscr, 22, 22, 0, 0);
+
+    // lines and level
+    ncursesView->level = subwin(stdscr, 7, 7, 8, 23);
+    mvwaddch(ncursesView->level, 1, 1, 'L');
+    mvwaddch(ncursesView->level, 1, 2, 'I');
+    mvwaddch(ncursesView->level, 1, 3, 'N');
+    mvwaddch(ncursesView->level, 1, 4, 'E');
+    mvwaddch(ncursesView->level, 1, 5, 'S');
+
+    int div = 1000;
+    for (int i = 1; i < 4; i++)
+    {
+        div /= 10;
+        mvwaddch(ncursesView->level, 2, i, ((nbLignes / div) % 10) + '0');
+    }
+
+    mvwaddch(ncursesView->level, 4, 1, 'L');
+    mvwaddch(ncursesView->level, 4, 2, 'E');
+    mvwaddch(ncursesView->level, 4, 3, 'V');
+    mvwaddch(ncursesView->level, 4, 4, 'E');
+    mvwaddch(ncursesView->level, 4, 5, 'L');
+
+    div = 100;
+    for (int i = 1; i < 3; i++)
+    {
+        div /= 10;
+        mvwaddch(ncursesView->level, 5, i, ((level / div) % 10) + '0');
+    }
+
+    // next box
     // ncursesView->next = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
-    // ncursesView->score = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
+
+    // highscore and score
+    ncursesView->score = subwin(stdscr, 7, 8, 0, 23);
+    mvwaddch(ncursesView->score, 1, 1, 'T');
+    mvwaddch(ncursesView->score, 1, 2, 'O');
+    mvwaddch(ncursesView->score, 1, 3, 'P');
+
+    div = 1000000;
+    for (int i = 1; i < 7; i++)
+    {
+        div /= 10;
+        mvwaddch(ncursesView->score, 2, i, ((highScore / div) % 10) + '0');
+    }
+
+    mvwaddch(ncursesView->score, 4, 1, 'S');
+    mvwaddch(ncursesView->score, 4, 2, 'C');
+    mvwaddch(ncursesView->score, 4, 3, 'O');
+    mvwaddch(ncursesView->score, 4, 4, 'R');
+    mvwaddch(ncursesView->score, 4, 5, 'E');
+
+    div = 1000000;
+    for (int i = 1; i < 7; i++)
+    {
+        div /= 10;
+        mvwaddch(ncursesView->score, 5, i, ((score / div) % 10) + '0');
+    }
+
+    // piece distribution
     // ncursesView->stats = subwin(stdscr, LINES - h / 2, COLS - w / 2, 0, 0);
+
     box(ncursesView->board, ACS_VLINE, ACS_HLINE);
-    // box(ncursesView->level, ACS_VLINE, ACS_HLINE);
+    box(ncursesView->level, ACS_VLINE, ACS_HLINE);
     // box(ncursesView->next, ACS_VLINE, ACS_HLINE);
-    // box(ncursesView->score, ACS_VLINE, ACS_HLINE);
+    box(ncursesView->score, ACS_VLINE, ACS_HLINE);
     // box(ncursesView->stats, ACS_VLINE, ACS_HLINE);
 
     return ncursesView;
@@ -55,6 +113,19 @@ void updateNcursesView(View *view, GameState *game)
     }
     refresh();
     wrefresh(ncursesView->board);
+
+    int div = 1000000;
+    for (int i = 1; i < 7; i++)
+    {
+        div /= 10;
+        mvwaddch(ncursesView->score, 5, i, ((score / div) % 10) + '0');
+    }
+    refresh();
+    wrefresh(ncursesView->score);
+}
+
+void destroyWindow(WINDOW *window)
+{
 }
 
 void destroyNcursesView(View *view)
@@ -65,7 +136,6 @@ void destroyNcursesView(View *view)
     {
         for (int j = 0; j < WIDTH; j++)
         {
-
             mvwaddch(ncursesView->board, i + 1, (j * 2) + 1, ' ');
             mvwaddch(ncursesView->board, i + 1, (j * 2) + 2, ' ');
         }
@@ -74,11 +144,18 @@ void destroyNcursesView(View *view)
     wrefresh(ncursesView->board);
     delwin(ncursesView->board);
 
+    for (int i = 0; i < 5; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            mvwaddch(ncursesView->board, i + 1, j + 1, ' ');
+        }
+    }
     wborder(ncursesView->level, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     wrefresh(ncursesView->level);
     delwin(ncursesView->level);
 
-    wborder(ncursesView->next, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+    /* wborder(ncursesView->next, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     wrefresh(ncursesView->next);
     delwin(ncursesView->next);
 
@@ -88,7 +165,7 @@ void destroyNcursesView(View *view)
 
     wborder(ncursesView->stats, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     wrefresh(ncursesView->stats);
-    delwin(ncursesView->stats);
+    delwin(ncursesView->stats); */
 
     free(ncursesView);
 }
