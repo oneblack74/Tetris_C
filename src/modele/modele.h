@@ -72,7 +72,7 @@ int getHighScore(char *file);
 void updateHighScore(char *file, int high);
 void updateLevel();
 int piecePosee(Cel *map, Piece p);
-void gameLoop(View SDL, View Ncurses, GameState *game);
+void gameLoop(View *view, GameState *game);
 void changePiece(GameState *game);
 void ajouteScore(int nb);
 
