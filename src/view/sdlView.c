@@ -262,7 +262,7 @@ void sdlEvent(View *view, GameState *game)
 			{
 			case SDLK_DOWN:
 				int ret = moveDown(game);
-				if (ret >= 0)
+				if (view->functions->play_sound != NULL && ret >= 0)
 				{
 					if (ret == 4)
 						view->functions->play_sound(view, 1);
@@ -275,7 +275,7 @@ void sdlEvent(View *view, GameState *game)
 				moveRight(game->map, &(game->p));
 				if (!verifCollision(game->map, game->p))
 					moveLeft(game->map, &(game->p));
-				else
+				else if (view->functions->play_sound != NULL)
 					view->functions->play_sound(view, 2);
 				break;
 
@@ -283,7 +283,7 @@ void sdlEvent(View *view, GameState *game)
 				moveLeft(game->map, &(game->p));
 				if (!verifCollision(game->map, game->p))
 					moveRight(game->map, &(game->p));
-				else
+				else if (view->functions->play_sound != NULL)
 					view->functions->play_sound(view, 2);
 				break;
 
@@ -291,7 +291,7 @@ void sdlEvent(View *view, GameState *game)
 				rotateLeft(game->map, &(game->p));
 				if (!verifCollision(game->map, game->p))
 					rotateRight(game->map, &(game->p));
-				else
+				else if (view->functions->play_sound != NULL)
 					view->functions->play_sound(view, 5);
 				break;
 
@@ -299,7 +299,7 @@ void sdlEvent(View *view, GameState *game)
 				rotateRight(game->map, &(game->p));
 				if (!verifCollision(game->map, game->p))
 					rotateLeft(game->map, &(game->p));
-				else
+				else if (view->functions->play_sound != NULL)
 					view->functions->play_sound(view, 5);
 				break;
 

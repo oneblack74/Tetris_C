@@ -10,8 +10,8 @@
 const int WIDTH = 10;
 const int HEIGHT = 20;
 const int TAILLE_CEL = 8;
-const int SCALE = 3;
 
+int SCALE = 3;
 int level = 2;
 int score = 0;
 int highScore = 0;

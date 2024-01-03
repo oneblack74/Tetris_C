@@ -8,8 +8,8 @@ extern const int HEIGHT;
 extern const int PIECE_START_X;
 extern const int PIECE_START_Y;
 extern const int TAILLE_CEL;
-extern const int SCALE;
 
+extern int SCALE;
 extern int nbLignes;
 extern int level;
 extern int score;
