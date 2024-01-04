@@ -39,7 +39,23 @@ int main(int argc, char **argv)
 			int tmp = (int)strtol(argv[0], &end, 10);
 			if (argv[0] != 0 && end[0] == 0)
 				if (tmp >= 0 && tmp <= 19)
+				{
 					level = tmp;
+					if (level > 9)
+					{
+						changeTransition = 1;
+						lim = (level - 5) * 10;
+						if (lim > 100)
+						{
+							diff = level - ((lim / 10) - 1);
+						}
+						else
+						{
+							lim = 100;
+							diff = level - 9;
+						}
+					}
+				}
 				else
 					printf("Pour le 2eme paramètre, choisir entre 0 et 19 pour le niveau de départ. Le jeu se lance au level 0 par défaut.\n");
 			else

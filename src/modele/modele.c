@@ -21,6 +21,10 @@ const int TAILLE_CEL = 8;
 
 int SCALE = 3;
 int level = 0;
+char changeTransition = 0;
+char hasTransitioned = 0;
+int lim = 0;
+int diff = 0;
 int score = 0;
 int highScore = 0;
 int nbLignes = 0;
@@ -224,10 +228,13 @@ int moveDown(GameState *game)
             changePiece(game);
             insertPiece(game);
             removePiece(game);
-            usleep(0.2 * 1e6);
+            usleep(0.35 * 1e6);
         }
         else
+        {
             changePiece(game);
+            usleep(0.15 * 1e6);
+        }
         if (!verifCollision(game->map, game->p))
         {
             game->run = 0;
@@ -526,9 +533,24 @@ void ajouteScore(int nb)
  */
 void updateLevel()
 {
-    if (nbLignes / 10 >= level)
+    if (changeTransition)
     {
-        level = nbLignes / 10;
+        if (!hasTransitioned)
+        {
+            if (nbLignes >= lim)
+                hasTransitioned = 1;
+        }
+        if (hasTransitioned)
+        {
+            level = (nbLignes / 10) + diff;
+        }
+    }
+    else
+    {
+        if (nbLignes / 10 >= level)
+        {
+            level = nbLignes / 10;
+        }
     }
 }
 
@@ -698,7 +720,7 @@ void gameLoop(View *view, GameState *game)
             curTMP = cur;
 
             if (view->functions->play_sound != NULL && level != level_tmp)
-                view->functions->play_sound(view, 8);
+                view->functions->play_sound(view, 7);
         }
 
         view->functions->event(view, game);
