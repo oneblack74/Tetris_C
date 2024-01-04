@@ -305,6 +305,7 @@ void sdlEvent(View *view, GameState *game)
 			switch (event.key.keysym.sym)
 			{
 			case SDLK_DOWN:
+			{
 				int ret = moveDown(game);
 				if (view->functions->play_sound != NULL && ret >= 0)
 				{
@@ -314,6 +315,7 @@ void sdlEvent(View *view, GameState *game)
 						view->functions->play_sound(view, 0);
 				}
 				break;
+			}
 
 			case SDLK_RIGHT:
 				moveRight(game->map, &(game->p));
