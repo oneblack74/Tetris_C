@@ -41,9 +41,9 @@ int main(int argc, char **argv)
 				if (tmp >= 0 && tmp <= 19)
 					level = tmp;
 				else
-					printf("Pour le 2eme parametre choisir entre 0 et 29 pour le niveau de depart. Le jeu ce lance de base au level 0.\n");
+					printf("Pour le 2eme paramètre, choisir entre 0 et 19 pour le niveau de départ. Le jeu se lance au level 0 par défaut.\n");
 			else
-				printf("Pour le 2eme parametre choisir entre 0 et 29 pour le niveau de depart. Le jeu ce lance de base au level 0.\n");
+				printf("Pour le 2eme paramètre, choisir entre 0 et 19 pour le niveau de départ. Le jeu se lance au level 0 par défaut.\n");
 
 			argc--;
 			argv++;
@@ -54,9 +54,9 @@ int main(int argc, char **argv)
 					if (tmp >= 0 && tmp <= 10)
 						SCALE = tmp;
 					else
-						printf("Pour le 3eme parametre choisir entre 0 et 10 pour la taille de la fenetre sdl. Le jeu ce lance de base à une taille de 3.\n");
+						printf("Pour le 3eme paramètre, choisir entre 0 et 10 pour la taille de la fenêtre sdl. Le jeu se lance à une taille de 3 par défaut.\n");
 				else
-					printf("Pour le 3eme parametre choisir entre 0 et 10 pour la taille de la fenetre sdl. Le jeu ce lance de base à une taille de 3.\n");
+					printf("Pour le 3eme paramètre, choisir entre 0 et 10 pour la taille de la fenêtre sdl. Le jeu se lance à une taille de 3 par défaut.\n");
 			}
 		}
 

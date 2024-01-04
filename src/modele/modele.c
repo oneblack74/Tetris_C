@@ -231,11 +231,6 @@ int moveDown(GameState *game)
         if (!verifCollision(game->map, game->p))
         {
             game->run = 0;
-            if (score > highScore)
-                updateHighScore("highscore.txt", score);
-            printf("Your score: %d\n", highScore);
-            printf("Aww man you topped out rip D: Good game!\n");
-            usleep(200 * 1e3);
         }
         return cleared;
     }
@@ -697,6 +692,7 @@ void gameLoop(View *view, GameState *game)
                     view->functions->play_sound(view, 1);
                 else if (ret > 0)
                     view->functions->play_sound(view, 0);
+                speed = getSpeed();
             }
             timespec_get(&cur, TIME_UTC);
             curTMP = cur;
@@ -712,6 +708,11 @@ void gameLoop(View *view, GameState *game)
     }
 
     view->functions->destroyView(view);
+
+    if (score > highScore)
+        updateHighScore("highscore.txt", score);
+    printf("Your score: %d\n", score);
+    printf("Aww man you topped out rip D: Good game!\n");
 
     free(game->map);
     free(game->listePiece);
