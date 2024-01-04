@@ -1,7 +1,22 @@
+/**
+ * @file view.c
+ * @author Hurez Matteo and Brissy Axel
+ * @brief vue du tetris
+ * @version 1.0
+ * @date 2024−01−04
+ *
+ * @copyright Copyright(c) 2024
+ */
 #include "view.h"
 #include "sdlView.h"
 #include "ncursesView.h"
 
+/**
+ * @brief permet d'initialiser la vue avec sdl
+ *
+ * @param w la largeur de la fenetre sdl
+ * @param h la hauteur de la fenetre sdl
+ */
 View sdlView_init(unsigned w, unsigned h)
 {
 	View view;
@@ -21,6 +36,9 @@ View sdlView_init(unsigned w, unsigned h)
 	return view;
 }
 
+/**
+ * @brief permet d'initialiser la vue avec ncurses
+ */
 View ncursesView_init()
 {
 	View view;

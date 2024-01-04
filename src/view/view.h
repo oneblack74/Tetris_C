@@ -6,25 +6,37 @@
 typedef struct GameState GameState;
 typedef struct View View;
 
+/**
+ * @enum TypeView
+ * @brief enumeration du type de vue
+ */
 typedef enum
 {
-	SDL_VIEW,
-	NCURSES_VIEW
+	SDL_VIEW,	 //!< vue sdl
+	NCURSES_VIEW //!< vue ncurses
 } TypeView;
 
+/**
+ * @struct Functions_View
+ * @brief structure des pointeurs de fonction
+ */
 typedef struct
 {
-	void (*updateView)(View *view, GameState *);
-	void (*destroyView)(View *view);
-	void (*play_sound)(View *view, int);
-	void (*event)(View *view, GameState *);
+	void (*updateView)(View *view, GameState *); //!< fonction update
+	void (*destroyView)(View *view);			 //!< fonction destroy
+	void (*play_sound)(View *view, int);		 //!< fonction pour jouer un sond
+	void (*event)(View *view, GameState *);		 //!< fonction evennement
 } Functions_View;
 
+/**
+ * @struct View
+ * @brief structure de la vue
+ */
 typedef struct View
 {
-	TypeView typeView;
-	Functions_View *functions;
-	void *instanciation;
+	TypeView typeView;		   //!< enum du type de vue
+	Functions_View *functions; //!< les pointeurs de fonction
+	void *instanciation;	   //!< l'espace memoir pour mettre la structure de sdl ou ncurses
 } View;
 
 View sdlView_init(unsigned w, unsigned h);
