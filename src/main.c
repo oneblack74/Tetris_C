@@ -1,3 +1,13 @@
+/**
+ * @file main.c
+ * @author Hurez Matteo and Brissy Axel
+ * @brief main du tetris
+ * @version 1.0
+ * @date 2024−01−04
+ *
+ * @copyright Copyright(c) 2024
+ */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -6,6 +16,9 @@
 #include "modele/modele.h"
 #include "view/view.h"
 
+/**
+ * @brief main du tetris
+ */
 int main(int argc, char **argv)
 {
 	argc--;

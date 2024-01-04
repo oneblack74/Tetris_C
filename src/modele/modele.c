@@ -1,6 +1,14 @@
+/**
+ * @file modele.c
+ * @author Hurez Matteo and Brissy Axel
+ * @brief modele du tetris
+ * @version 1.0
+ * @date 2024−01−04
+ *
+ * @copyright Copyright(c) 2024
+ */
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 #include <string.h>
 #include <SDL2/SDL.h>
 #include <unistd.h>
@@ -18,6 +26,11 @@ int highScore = 0;
 int nbLignes = 0;
 int stats[7] = {0, 0, 0, 0, 0, 0, 0};
 
+/**
+ * @brief permet d'initialiser la gamestate du tetris
+ *
+ * @param game gamestate du jeu
+ */
 void initModele(GameState *game)
 {
     initListePiece(game);
@@ -29,7 +42,11 @@ void initModele(GameState *game)
     game->run = 1;
 }
 
-// initialise la liste qui contient les 7 pièces différentes
+/**
+ * @brief initialise la liste qui contient les 7 pièces différentes
+ *
+ * @param game gamestate du jeu
+ */
 void initListePiece(GameState *game)
 {
     game->listePiece = (Piece *)malloc(sizeof(Piece) * 7);
@@ -128,7 +145,11 @@ void initListePiece(GameState *game)
     game->listePiece[6] = p;
 }
 
-// initialise la map vide
+/**
+ * @brief initialise la map vide
+ *
+ * @param game gamestate du jeu
+ */
 void initMap(GameState *game)
 {
     game->map = (Cel *)malloc(sizeof(Cel) * WIDTH * HEIGHT);
@@ -142,7 +163,11 @@ void initMap(GameState *game)
     }
 }
 
-// insère la pièce qui descend dans le tableau pour l'afficher (en texte)
+/**
+ * @brief insère la pièce qui descend dans le tableau pour l'afficher (en texte)
+ *
+ * @param game gamestate du jeu
+ */
 void insertPiece(GameState *game)
 {
     for (int i = 0; i < 4; i++)
@@ -158,7 +183,11 @@ void insertPiece(GameState *game)
     }
 }
 
-// retire la pièce du tableau pour la déplacer
+/**
+ * @brief retire la pièce du tableau pour la déplacer
+ *
+ * @param game gamestate du jeu
+ */
 void removePiece(GameState *game)
 {
     for (int i = 0; i < 4; i++)
@@ -173,7 +202,12 @@ void removePiece(GameState *game)
     }
 }
 
-// déplace la pièce vers le bas
+/**
+ * @brief déplace la pièce vers le bas
+ *
+ * @param game gamestate du jeu
+ * @return un entier -1 si la pièce est descendu, 0 à 4 si la pièce c'est posé donc n'est pas descendu et dit combien de ligne ont été clear
+ */
 int moveDown(GameState *game)
 {
     game->p.y++;
@@ -208,25 +242,45 @@ int moveDown(GameState *game)
     return -1;
 }
 
-// déplace la pièce vers le haut (pour gérer les collisions)
+/**
+ * @brief déplace la pièce vers le haut
+ *
+ * @param map est la matrice du tetris
+ * @param p est la pièce qui tombe
+ */
 void moveUp(Cel *map, Piece *p)
 {
     p->y--;
 }
 
-// déplace la pièce vers la droite
+/**
+ * @brief déplace la pièce vers la droite
+ *
+ * @param map est la matrice du tetris
+ * @param p est la pièce qui tombe
+ */
 void moveRight(Cel *map, Piece *p)
 {
     p->x++;
 }
 
-// déplace la pièce vers la gauche
+/**
+ * @brief déplace la pièce vers la gauche
+ *
+ * @param map est la matrice du tetris
+ * @param p est la pièce qui tombe
+ */
 void moveLeft(Cel *map, Piece *p)
 {
     p->x--;
 }
 
-// fait tourner la pièce vers la droite
+/**
+ * @brief fait tourner la pièce vers la droite
+ *
+ * @param map est la matrice du tetris
+ * @param p est la pièce qui tombe
+ */
 void rotateLeft(Cel *map, Piece *p)
 {
     for (int i = 0; i < 4; i++)
@@ -245,7 +299,12 @@ void rotateLeft(Cel *map, Piece *p)
     p->y += (p->w - p->h);
 }
 
-// fait tourner la pièce vers la gauche
+/**
+ * @brief fait tourner la pièce vers la gauche
+ *
+ * @param map est la matrice du tetris
+ * @param p est la pièce qui tombe
+ */
 void rotateRight(Cel *map, Piece *p)
 {
     for (int i = 0; i < 4; i++)
@@ -264,7 +323,12 @@ void rotateRight(Cel *map, Piece *p)
     p->y += (p->w - p->h);
 }
 
-// supprime la ligne de coordonnée y
+/**
+ * @brief supprime la ligne de coordonnée y
+ *
+ * @param map est la matrice du tetris
+ * @param y est la hauteur de la ligne à supprimer
+ */
 void deleteLine(Cel *map, int y)
 {
     if (0 <= y && y < HEIGHT)
@@ -276,66 +340,13 @@ void deleteLine(Cel *map, int y)
     }
 }
 
-void affiche(Cel *map, Piece nextBox)
-{
-    printf("+--------------------+\n");
-    for (int i = 0; i < HEIGHT; i++)
-    {
-        printf("|");
-        for (int j = 0; j < WIDTH; j++)
-        {
-            if (map[i * WIDTH + j].a)
-            {
-                printf("[]");
-            }
-            else
-            {
-                printf("  ");
-            }
-        }
-        printf("|\n");
-    }
-    printf("+--------------------+\n");
-    printf("Score: %d - Lines: %d - Level: %d\n", score, nbLignes, level);
-    printf("High score: %d\n", highScore);
-    printf("NextBox: ");
-    switch (nextBox.type)
-    {
-    case 0:
-        printf("T");
-        break;
-
-    case 1:
-        printf("J");
-        break;
-
-    case 2:
-        printf("Z");
-        break;
-
-    case 3:
-        printf("O");
-        break;
-
-    case 4:
-        printf("S");
-        break;
-
-    case 5:
-        printf("L");
-        break;
-
-    case 6:
-        printf("I");
-        break;
-
-    default:
-        break;
-    }
-    printf("\n");
-}
-
-// vérifie si la pièce est entrée en collision avec les bords de la map ainsi que les pièces déjà posées
+/**
+ * @brief vérifie si la pièce est entrée en collision avec les bords de la map ainsi que les pièces déjà posées
+ *
+ * @param map est la matrice du tetris
+ * @param p est la pièce qui tombe
+ * @return un entier (0 ou 1) pour savoir si la pièce à fait une collision
+ */
 int verifCollision(Cel *map, Piece p)
 {
     for (int i = 0; i < 4; i++)
@@ -353,6 +364,13 @@ int verifCollision(Cel *map, Piece p)
     return 1;
 }
 
+/**
+ * @brief vérifie si une ligne est pleine pour ensuite la pouvoir la supprimer
+ *
+ * @param map est la matrice du tetris
+ * @param y la hauteur de la ligne à vérifier
+ * @return un entier (0 ou 1) pour savoir si la ligne est pleine
+ */
 int verifDeleteLine(Cel *map, int y)
 {
     for (int i = 0; i < WIDTH; i++)
@@ -363,6 +381,12 @@ int verifDeleteLine(Cel *map, int y)
     return 1;
 }
 
+/**
+ * @brief permet de descendre la matrice de 1 vers le bas jusqu'à la ligne qu'on a supprimé
+ *
+ * @param map est la matrice du tetris
+ * @param y la hauteur de la ligne à laquel on descend
+ */
 void mapDown(Cel *map, int y)
 {
     for (int i = y; i >= 1; i--)
@@ -381,6 +405,12 @@ void mapDown(Cel *map, int y)
     }
 }
 
+/**
+ * @brief initialise la map vide
+ *
+ * @param file est le nom du fichier txt où est stocké le highscore
+ * @return un entier correspondant au highscore
+ */
 int getHighScore(char *file)
 {
     FILE *f;
@@ -414,6 +444,12 @@ int getHighScore(char *file)
     return high;
 }
 
+/**
+ * @brief réécrire dans le fichier txt du highscore le nouveau
+ *
+ * @param file le fichier txt du highscore
+ * @param high le highscore à ajouter
+ */
 void updateHighScore(char *file, int high)
 {
     FILE *f;
@@ -447,6 +483,11 @@ void updateHighScore(char *file, int high)
     fclose(f);
 }
 
+/**
+ * @brief permet d'ajouter le score en fonction du niveau et du noumbre de ligne clear
+ *
+ * @param nb nombre de ligne clear
+ */
 void ajouteScore(int nb)
 {
     switch (nb)
@@ -472,7 +513,9 @@ void ajouteScore(int nb)
     }
 }
 
-// à modif selon le level start ultérieurement
+/**
+ * @brief permet de mettre à jour le level
+ */
 void updateLevel()
 {
     if (nbLignes / 10 >= level)
@@ -481,6 +524,13 @@ void updateLevel()
     }
 }
 
+/**
+ * @brief est appeler quand la pièce c'est posée et permet d'appeler les fonction pour supprimer les lignes si elle sont pleine
+ *
+ * @param map est la matrice du tetris
+ * @param p est la pièce qui tombe
+ * @return le nombre de ligne qui ont étés supprimés
+ */
 int piecePosee(Cel *map, Piece p)
 {
     int cpt = 0;
@@ -497,6 +547,11 @@ int piecePosee(Cel *map, Piece p)
     return cpt;
 }
 
+/**
+ * @brief permet de choisir une nouvelle pièce en nextbox et met la pièce avec l'ancienne nextbox
+ *
+ * @param game gamestate du jeu
+ */
 void changePiece(GameState *game)
 {
     game->p = game->nextBox;
@@ -505,6 +560,11 @@ void changePiece(GameState *game)
     stats[game->p.type]++;
 }
 
+/**
+ * @brief permet de donner la speed du jeu par rapport au level (donne un temps en milliseconde entre chaque descente de pièce)
+ *
+ * @return un entier positif qui est un temps en milliseconde
+ */
 unsigned int getSpeed()
 {
     switch (level)
@@ -573,11 +633,24 @@ unsigned int getSpeed()
     return 17;
 }
 
+/**
+ * @brief donne la différence de temps en milliseconde entre 2 temps
+ *
+ * @param time1 est le temps courant
+ * @param time0 est le temps tempon
+ * @return un entier positif qui est un temps en milliseconde
+ */
 unsigned int timespecDiff(const struct timespec *time1, const struct timespec *time0)
 {
     return ((time1->tv_sec - time0->tv_sec) * 1000 + (time1->tv_nsec - time0->tv_nsec) / 1000000);
 }
 
+/**
+ * @brief gameloop du jeu qui permet de communiquer avec la vue
+ *
+ * @param view qui est la vue de jeu (ncurses ou sdl)
+ * @param game gamestate du jeu
+ */
 void gameLoop(View *view, GameState *game)
 {
     highScore = getHighScore("highscore.txt");

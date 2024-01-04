@@ -1,6 +1,8 @@
 #ifndef MODELE_H
 #define MODELE_H
 
+#include <time.h>
+
 #include "view/view.h"
 
 extern const int WIDTH;
@@ -18,38 +20,50 @@ extern int stats[];
 
 typedef struct View View;
 
-// structure qui contient les coordonnées x, y d'un block
+/**
+ * @struct Block
+ * @brief structure qui contient les coordonnées x, y d'un block
+ */
 typedef struct Block
 {
-    int x;
-    int y;
+    int x; //!< coordonnnée x
+    int y; //!< coordonnée y
 } Block;
 
-// structure de la pièce qui tombe
-// contient la position des 4 blocks qui la composent, sa couleur, son type et l'indice de sa rotation
+/**
+ * @struct Piece
+ * @brief structure de la pièce qui tombe
+ */
 typedef struct Piece
 {
-    Block b[4]; // liste de la pos des 4 blocks
-    int c;      // couleur --> ind de la liste des couleurs
-    int type;   // dans la liste [T, J, Z, O, S, L, I]
-    int h, w;   // taille la matrice
-    int x, y;   // coordonnees du coins supérieur gauche de la matrice
+    Block b[4]; //!< liste de la pos des 4 blocks
+    int c;      //!< couleur --> ind de la liste des couleurs
+    int type;   //!< dans la liste [T, J, Z, O, S, L, I]
+    int h, w;   //!< taille la matrice
+    int x, y;   //!< coordonnees du coins supérieur gauche de la matrice
 } Piece;
 
-// structure de cellule qui compose la map
+/**
+ * @struct Cel
+ * @brief Celullue de la matrice
+ */
 typedef struct Cel
 {
-    int a; // 1 si il contient un block et 0 si vide
-    int c; // couleur du block si a non vide
+    int a; //!< 1 si il contient un block et 0 si vide
+    int c; //!< couleur du block si a non vide
 } Cel;
 
+/**
+ * @struct GameState
+ * @brief gamestate du jeu
+ */
 typedef struct GameState
 {
-    Cel *map;
-    Piece p;
-    Piece nextBox;
-    Piece *listePiece;
-    int run;
+    Cel *map;          //!< matrice du tetris
+    Piece p;           //!< structure Piece qui contient la pièce qui tombe
+    Piece nextBox;     //!< structure Pièce qui contient la prochaine pièce
+    Piece *listePiece; //!< liste de tous les types de pièce
+    int run;           //!< variable run pour la boucle du jeu
 } GameState;
 
 void initModele(GameState *game);
@@ -64,16 +78,16 @@ void moveLeft(Cel *map, Piece *p);
 void rotateRight(Cel *map, Piece *p);
 void rotateLeft(Cel *map, Piece *p);
 void deleteLine(Cel *map, int y);
-void affiche(Cel *map, Piece nextBox);
 int verifCollision(Cel *map, Piece p);
 int verifDeleteLine(Cel *map, int y);
 void mapDown(Cel *map, int y);
 int getHighScore(char *file);
 void updateHighScore(char *file, int high);
+void ajouteScore(int nb);
 void updateLevel();
 int piecePosee(Cel *map, Piece p);
-void gameLoop(View *view, GameState *game);
 void changePiece(GameState *game);
-void ajouteScore(int nb);
-
+unsigned int getSpeed();
+unsigned int timespecDiff(const struct timespec *time1, const struct timespec *time0);
+void gameLoop(View *view, GameState *game);
 #endif
