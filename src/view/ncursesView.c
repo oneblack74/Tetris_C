@@ -313,9 +313,8 @@ void destroyNcursesView(View *view)
     wrefresh(ncursesView->stats);
     delwin(ncursesView->stats);
 
+    endwin();
     free(ncursesView);
-    echo();
-    curs_set(1);
 }
 
 void ncursesEvent(View *view, GameState *game)
