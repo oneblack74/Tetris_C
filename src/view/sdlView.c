@@ -1,13 +1,24 @@
+/**
+ * @file sdlView.c
+ * @author Hurez Matteo and Brissy Axel
+ * @brief vue sdl
+ * @version 1.0
+ * @date 2024−01−04
+ *
+ * @copyright Copyright (c) 2024
+ */
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "sdlView.h"
 #include "modele/modele.h"
 
-// 24 - 93
-
 /**
- * @brief createSdlView implementation.
+ * @brief créer la structure sdlView et donc initialiser sdl
+ *
+ * @param w largeur de la fenetre
+ * @param h hauteur de la fenetre
+ * @return struct sdlView
  */
 SdlView *createSdlView(unsigned w, unsigned h)
 {
@@ -105,6 +116,16 @@ SdlView *createSdlView(unsigned w, unsigned h)
 	return sdlView;
 }
 
+/**
+ * @brief permet d'afficher un nombre sur la fenetre avec les images
+ *
+ * @param n le nombre à afficher
+ * @param nb_chiffre le nombre de chiffre max à afficher
+ * @param x coordonné x de la où on place le nombre
+ * @param y coordonné y de la où on place le nombre
+ * @param color la couleur du nombre (rouge ou blanc)
+ * @param sdlView la structure sdlView
+ */
 void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *sdlView)
 {
 	int ind, cpt = 0;
@@ -131,6 +152,12 @@ void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *s
 	}
 }
 
+/**
+ * @brief permet d'update la fenetre et le rendu
+ *
+ * @param view la structure view
+ * @param game la gamestate du jeu
+ */
 void sdlUpdateView(View *view, GameState *game)
 {
 	SdlView *sdlView = (SdlView *)view->instanciation;
@@ -214,6 +241,11 @@ void sdlUpdateView(View *view, GameState *game)
 	SDL_RenderPresent(sdlView->renderer);
 }
 
+/**
+ * @brief de détruire clear et quitter sdl
+ *
+ * @param view la structure view
+ */
 void destroySdlView(View *view)
 {
 	SdlView *sdlView = (SdlView *)view->instanciation;
@@ -239,6 +271,12 @@ void destroySdlView(View *view)
 	SDL_Quit();
 }
 
+/**
+ * @brief permet de jouer un sond
+ *
+ * @param view la structure view
+ * @param ind indice du sond dans le tableau à jouer
+ */
 void play_sound(View *view, int ind)
 {
 	SdlView *sdlView = (SdlView *)view->instanciation;
@@ -246,6 +284,12 @@ void play_sound(View *view, int ind)
 	Mix_PlayChannel(-1, sdlView->tab_sounds[ind], 0);
 }
 
+/**
+ * @brief permet de gérer les évènement de sdl
+ *
+ * @param view la structure view
+ * @param game la gamestate du jeu
+ */
 void sdlEvent(View *view, GameState *game)
 {
 	SdlView *sdlView = (SdlView *)view->instanciation;
