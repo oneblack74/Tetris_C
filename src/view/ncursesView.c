@@ -196,6 +196,97 @@ void updateNcursesView(View *view, GameState *game)
         mvwaddch(ncursesView->score, 5, i, ((score / div) % 10) + '0');
     }
 
+    for (int i = 1; i < 3; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            mvwaddch(ncursesView->next, i + 1, j + 1, ' ');
+        }
+    }
+
+    switch (game->nextBox.type)
+    {
+    case 0: // T
+        mvwaddch(ncursesView->next, 2, 2, '[');
+        mvwaddch(ncursesView->next, 2, 3, ']');
+        mvwaddch(ncursesView->next, 2, 4, '[');
+        mvwaddch(ncursesView->next, 2, 5, ']');
+        mvwaddch(ncursesView->next, 2, 6, '[');
+        mvwaddch(ncursesView->next, 2, 7, ']');
+        mvwaddch(ncursesView->next, 3, 4, '[');
+        mvwaddch(ncursesView->next, 3, 5, ']');
+        break;
+
+    case 1: // J
+        mvwaddch(ncursesView->next, 2, 2, '[');
+        mvwaddch(ncursesView->next, 2, 3, ']');
+        mvwaddch(ncursesView->next, 2, 4, '[');
+        mvwaddch(ncursesView->next, 2, 5, ']');
+        mvwaddch(ncursesView->next, 2, 6, '[');
+        mvwaddch(ncursesView->next, 2, 7, ']');
+        mvwaddch(ncursesView->next, 3, 6, '[');
+        mvwaddch(ncursesView->next, 3, 7, ']');
+        break;
+
+    case 2: // Z
+        mvwaddch(ncursesView->next, 2, 2, '[');
+        mvwaddch(ncursesView->next, 2, 3, ']');
+        mvwaddch(ncursesView->next, 2, 4, '[');
+        mvwaddch(ncursesView->next, 2, 5, ']');
+        mvwaddch(ncursesView->next, 3, 4, '[');
+        mvwaddch(ncursesView->next, 3, 5, ']');
+        mvwaddch(ncursesView->next, 3, 6, '[');
+        mvwaddch(ncursesView->next, 3, 7, ']');
+        break;
+
+    case 3: // O
+        mvwaddch(ncursesView->next, 2, 3, '[');
+        mvwaddch(ncursesView->next, 2, 4, ']');
+        mvwaddch(ncursesView->next, 2, 5, '[');
+        mvwaddch(ncursesView->next, 2, 6, ']');
+        mvwaddch(ncursesView->next, 3, 3, '[');
+        mvwaddch(ncursesView->next, 3, 4, ']');
+        mvwaddch(ncursesView->next, 3, 5, '[');
+        mvwaddch(ncursesView->next, 3, 6, ']');
+        break;
+
+    case 4: // S
+        mvwaddch(ncursesView->next, 2, 4, '[');
+        mvwaddch(ncursesView->next, 2, 5, ']');
+        mvwaddch(ncursesView->next, 2, 6, '[');
+        mvwaddch(ncursesView->next, 2, 7, ']');
+        mvwaddch(ncursesView->next, 3, 2, '[');
+        mvwaddch(ncursesView->next, 3, 3, ']');
+        mvwaddch(ncursesView->next, 3, 4, '[');
+        mvwaddch(ncursesView->next, 3, 5, ']');
+        break;
+
+    case 5: // L
+        mvwaddch(ncursesView->next, 2, 2, '[');
+        mvwaddch(ncursesView->next, 2, 3, ']');
+        mvwaddch(ncursesView->next, 2, 4, '[');
+        mvwaddch(ncursesView->next, 2, 5, ']');
+        mvwaddch(ncursesView->next, 2, 6, '[');
+        mvwaddch(ncursesView->next, 2, 7, ']');
+        mvwaddch(ncursesView->next, 3, 2, '[');
+        mvwaddch(ncursesView->next, 3, 3, ']');
+        break;
+
+    case 6: // I
+        mvwaddch(ncursesView->next, 2, 1, '[');
+        mvwaddch(ncursesView->next, 2, 2, ']');
+        mvwaddch(ncursesView->next, 2, 3, '[');
+        mvwaddch(ncursesView->next, 2, 4, ']');
+        mvwaddch(ncursesView->next, 2, 5, '[');
+        mvwaddch(ncursesView->next, 2, 6, ']');
+        mvwaddch(ncursesView->next, 2, 7, '[');
+        mvwaddch(ncursesView->next, 2, 8, ']');
+        break;
+
+    default:
+        break;
+    }
+
     div = 1000;
     for (int i = 10; i < 13; i++)
     {
