@@ -1,9 +1,23 @@
+/**
+ * @file ncursesView.c
+ * @author Hurez Matteo and Brissy Axel
+ * @brief vue ncurses
+ * @version 1.0
+ * @date 2024−01−04
+ *
+ * @copyright Copyright (c) 2024
+ */
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "ncursesView.h"
 #include "modele/modele.h"
 
+/**
+ * @brief permet de créer la structure NcursesView et initialiser ncurses
+ *
+ * @return struct ncursesView
+ */
 NcursesView *createNcursesView()
 {
     NcursesView *ncursesView = (NcursesView *)malloc(sizeof(NcursesView));
@@ -20,11 +34,32 @@ NcursesView *createNcursesView()
     keypad(stdscr, TRUE);
     curs_set(0);
 
+    if (has_colors() == FALSE)
+    {
+        endwin();
+        printf("Ce terminal ne supporte pas les couleurs.");
+        exit(EXIT_FAILURE);
+    }
+
+    start_color();
+    init_pair(1, COLOR_WHITE, COLOR_BLACK);
+    init_pair(2, COLOR_CYAN, COLOR_BLACK);
+    init_pair(3, COLOR_BLUE, COLOR_BLACK);
+
+    // title
+    ncursesView->title = subwin(stdscr, 3, 8, 1, 23);
+    mvwaddch(ncursesView->title, 1, 1, 'T');
+    mvwaddch(ncursesView->title, 1, 2, 'E');
+    mvwaddch(ncursesView->title, 1, 3, 'T');
+    mvwaddch(ncursesView->title, 1, 4, 'R');
+    mvwaddch(ncursesView->title, 1, 5, 'I');
+    mvwaddch(ncursesView->title, 1, 6, 'S');
+
     // board
-    ncursesView->board = subwin(stdscr, 22, 22, 0, 15);
+    ncursesView->board = subwin(stdscr, 22, 22, 4, 16);
 
     // lines and level
-    ncursesView->level = subwin(stdscr, 7, 7, 13, 38);
+    ncursesView->level = subwin(stdscr, 7, 7, 16, 39);
     mvwaddch(ncursesView->level, 1, 1, 'L');
     mvwaddch(ncursesView->level, 1, 2, 'I');
     mvwaddch(ncursesView->level, 1, 3, 'N');
@@ -38,14 +73,14 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->level, 4, 5, 'L');
 
     // next box
-    ncursesView->next = subwin(stdscr, 5, 10, 8, 38);
+    ncursesView->next = subwin(stdscr, 5, 10, 11, 39);
     mvwaddch(ncursesView->next, 1, 3, 'N');
     mvwaddch(ncursesView->next, 1, 4, 'E');
     mvwaddch(ncursesView->next, 1, 5, 'X');
     mvwaddch(ncursesView->next, 1, 6, 'T');
 
     // highscore and score
-    ncursesView->score = subwin(stdscr, 7, 8, 0, 38);
+    ncursesView->score = subwin(stdscr, 7, 8, 4, 39);
     mvwaddch(ncursesView->score, 1, 1, 'T');
     mvwaddch(ncursesView->score, 1, 2, 'O');
     mvwaddch(ncursesView->score, 1, 3, 'P');
@@ -57,7 +92,7 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->score, 4, 5, 'E');
 
     // piece distribution
-    ncursesView->stats = subwin(stdscr, 23, 14, 0, 0);
+    ncursesView->stats = subwin(stdscr, 23, 14, 4, 1);
     mvwaddch(ncursesView->stats, 1, 2, 'S');
     mvwaddch(ncursesView->stats, 1, 3, 'T');
     mvwaddch(ncursesView->stats, 1, 4, 'A');
@@ -70,6 +105,7 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->stats, 1, 11, 'S');
 
     // T
+    wattron(ncursesView->stats, COLOR_PAIR(1));
     mvwaddch(ncursesView->stats, 3, 2, '[');
     mvwaddch(ncursesView->stats, 3, 3, ']');
     mvwaddch(ncursesView->stats, 3, 4, '[');
@@ -78,8 +114,10 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->stats, 3, 7, ']');
     mvwaddch(ncursesView->stats, 4, 4, '[');
     mvwaddch(ncursesView->stats, 4, 5, ']');
+    wattroff(ncursesView->stats, COLOR_PAIR(1));
 
     // J
+    wattron(ncursesView->stats, COLOR_PAIR(3));
     mvwaddch(ncursesView->stats, 6, 2, '[');
     mvwaddch(ncursesView->stats, 6, 3, ']');
     mvwaddch(ncursesView->stats, 6, 4, '[');
@@ -88,8 +126,10 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->stats, 6, 7, ']');
     mvwaddch(ncursesView->stats, 7, 6, '[');
     mvwaddch(ncursesView->stats, 7, 7, ']');
+    wattroff(ncursesView->stats, COLOR_PAIR(3));
 
     // Z
+    wattron(ncursesView->stats, COLOR_PAIR(2));
     mvwaddch(ncursesView->stats, 9, 2, '[');
     mvwaddch(ncursesView->stats, 9, 3, ']');
     mvwaddch(ncursesView->stats, 9, 4, '[');
@@ -98,8 +138,10 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->stats, 10, 5, ']');
     mvwaddch(ncursesView->stats, 10, 6, '[');
     mvwaddch(ncursesView->stats, 10, 7, ']');
+    wattroff(ncursesView->stats, COLOR_PAIR(2));
 
     // O
+    wattron(ncursesView->stats, COLOR_PAIR(1));
     mvwaddch(ncursesView->stats, 12, 3, '[');
     mvwaddch(ncursesView->stats, 12, 4, ']');
     mvwaddch(ncursesView->stats, 12, 5, '[');
@@ -108,8 +150,10 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->stats, 13, 4, ']');
     mvwaddch(ncursesView->stats, 13, 5, '[');
     mvwaddch(ncursesView->stats, 13, 6, ']');
+    wattroff(ncursesView->stats, COLOR_PAIR(1));
 
     // S
+    wattron(ncursesView->stats, COLOR_PAIR(3));
     mvwaddch(ncursesView->stats, 15, 4, '[');
     mvwaddch(ncursesView->stats, 15, 5, ']');
     mvwaddch(ncursesView->stats, 15, 6, '[');
@@ -118,8 +162,10 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->stats, 16, 3, ']');
     mvwaddch(ncursesView->stats, 16, 4, '[');
     mvwaddch(ncursesView->stats, 16, 5, ']');
+    wattroff(ncursesView->stats, COLOR_PAIR(3));
 
     // L
+    wattron(ncursesView->stats, COLOR_PAIR(2));
     mvwaddch(ncursesView->stats, 18, 2, '[');
     mvwaddch(ncursesView->stats, 18, 3, ']');
     mvwaddch(ncursesView->stats, 18, 4, '[');
@@ -128,8 +174,10 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->stats, 18, 7, ']');
     mvwaddch(ncursesView->stats, 19, 2, '[');
     mvwaddch(ncursesView->stats, 19, 3, ']');
+    wattroff(ncursesView->stats, COLOR_PAIR(2));
 
     // I
+    wattron(ncursesView->stats, COLOR_PAIR(1));
     mvwaddch(ncursesView->stats, 21, 1, '[');
     mvwaddch(ncursesView->stats, 21, 2, ']');
     mvwaddch(ncursesView->stats, 21, 3, '[');
@@ -138,7 +186,10 @@ NcursesView *createNcursesView()
     mvwaddch(ncursesView->stats, 21, 6, ']');
     mvwaddch(ncursesView->stats, 21, 7, '[');
     mvwaddch(ncursesView->stats, 21, 8, ']');
+    wattroff(ncursesView->stats, COLOR_PAIR(1));
 
+    // Box
+    box(ncursesView->title, ACS_VLINE, ACS_HLINE);
     box(ncursesView->board, ACS_VLINE, ACS_HLINE);
     box(ncursesView->level, ACS_VLINE, ACS_HLINE);
     box(ncursesView->next, ACS_VLINE, ACS_HLINE);
@@ -148,17 +199,41 @@ NcursesView *createNcursesView()
     return ncursesView;
 }
 
+/**
+ * @brief permet de mettre à jour le rendu ncurses
+ *
+ * @param view la structure view
+ * @param game gamestate du jeu
+ */
 void updateNcursesView(View *view, GameState *game)
 {
     NcursesView *ncursesView = (NcursesView *)view->instanciation;
+    int ind = 0;
+
     for (int i = 0; i < HEIGHT; i++)
     {
         for (int j = 0; j < WIDTH; j++)
         {
             if (game->map[i * WIDTH + j].a)
             {
+                switch (game->map[i * WIDTH + j].c)
+                {
+                case 0:
+                    ind = 1;
+                    break;
+                case 1:
+                    ind = 2;
+                    break;
+                case 2:
+                    ind = 3;
+                    break;
+                default:
+                    break;
+                }
+                wattron(ncursesView->board, COLOR_PAIR(ind));
                 mvwaddch(ncursesView->board, i + 1, (j * 2) + 1, '[');
                 mvwaddch(ncursesView->board, i + 1, (j * 2) + 2, ']');
+                wattroff(ncursesView->board, COLOR_PAIR(ind));
             }
             else
             {
@@ -207,6 +282,7 @@ void updateNcursesView(View *view, GameState *game)
     switch (game->nextBox.type)
     {
     case 0: // T
+        wattron(ncursesView->next, COLOR_PAIR(1));
         mvwaddch(ncursesView->next, 2, 2, '[');
         mvwaddch(ncursesView->next, 2, 3, ']');
         mvwaddch(ncursesView->next, 2, 4, '[');
@@ -215,9 +291,11 @@ void updateNcursesView(View *view, GameState *game)
         mvwaddch(ncursesView->next, 2, 7, ']');
         mvwaddch(ncursesView->next, 3, 4, '[');
         mvwaddch(ncursesView->next, 3, 5, ']');
+        wattroff(ncursesView->next, COLOR_PAIR(1));
         break;
 
     case 1: // J
+        wattron(ncursesView->next, COLOR_PAIR(3));
         mvwaddch(ncursesView->next, 2, 2, '[');
         mvwaddch(ncursesView->next, 2, 3, ']');
         mvwaddch(ncursesView->next, 2, 4, '[');
@@ -226,9 +304,11 @@ void updateNcursesView(View *view, GameState *game)
         mvwaddch(ncursesView->next, 2, 7, ']');
         mvwaddch(ncursesView->next, 3, 6, '[');
         mvwaddch(ncursesView->next, 3, 7, ']');
+        wattroff(ncursesView->next, COLOR_PAIR(3));
         break;
 
     case 2: // Z
+        wattron(ncursesView->next, COLOR_PAIR(2));
         mvwaddch(ncursesView->next, 2, 2, '[');
         mvwaddch(ncursesView->next, 2, 3, ']');
         mvwaddch(ncursesView->next, 2, 4, '[');
@@ -237,9 +317,11 @@ void updateNcursesView(View *view, GameState *game)
         mvwaddch(ncursesView->next, 3, 5, ']');
         mvwaddch(ncursesView->next, 3, 6, '[');
         mvwaddch(ncursesView->next, 3, 7, ']');
+        wattroff(ncursesView->next, COLOR_PAIR(2));
         break;
 
     case 3: // O
+        wattron(ncursesView->next, COLOR_PAIR(1));
         mvwaddch(ncursesView->next, 2, 3, '[');
         mvwaddch(ncursesView->next, 2, 4, ']');
         mvwaddch(ncursesView->next, 2, 5, '[');
@@ -248,9 +330,11 @@ void updateNcursesView(View *view, GameState *game)
         mvwaddch(ncursesView->next, 3, 4, ']');
         mvwaddch(ncursesView->next, 3, 5, '[');
         mvwaddch(ncursesView->next, 3, 6, ']');
+        wattroff(ncursesView->next, COLOR_PAIR(1));
         break;
 
     case 4: // S
+        wattron(ncursesView->next, COLOR_PAIR(3));
         mvwaddch(ncursesView->next, 2, 4, '[');
         mvwaddch(ncursesView->next, 2, 5, ']');
         mvwaddch(ncursesView->next, 2, 6, '[');
@@ -259,9 +343,11 @@ void updateNcursesView(View *view, GameState *game)
         mvwaddch(ncursesView->next, 3, 3, ']');
         mvwaddch(ncursesView->next, 3, 4, '[');
         mvwaddch(ncursesView->next, 3, 5, ']');
+        wattroff(ncursesView->next, COLOR_PAIR(3));
         break;
 
     case 5: // L
+        wattron(ncursesView->next, COLOR_PAIR(2));
         mvwaddch(ncursesView->next, 2, 2, '[');
         mvwaddch(ncursesView->next, 2, 3, ']');
         mvwaddch(ncursesView->next, 2, 4, '[');
@@ -270,9 +356,11 @@ void updateNcursesView(View *view, GameState *game)
         mvwaddch(ncursesView->next, 2, 7, ']');
         mvwaddch(ncursesView->next, 3, 2, '[');
         mvwaddch(ncursesView->next, 3, 3, ']');
+        wattroff(ncursesView->next, COLOR_PAIR(2));
         break;
 
     case 6: // I
+        wattron(ncursesView->next, COLOR_PAIR(1));
         mvwaddch(ncursesView->next, 2, 1, '[');
         mvwaddch(ncursesView->next, 2, 2, ']');
         mvwaddch(ncursesView->next, 2, 3, '[');
@@ -281,6 +369,7 @@ void updateNcursesView(View *view, GameState *game)
         mvwaddch(ncursesView->next, 2, 6, ']');
         mvwaddch(ncursesView->next, 2, 7, '[');
         mvwaddch(ncursesView->next, 2, 8, ']');
+        wattroff(ncursesView->next, COLOR_PAIR(1));
         break;
 
     default:
@@ -344,9 +433,25 @@ void updateNcursesView(View *view, GameState *game)
     wrefresh(ncursesView->stats);
 }
 
+/**
+ * @brief permet de clear et quitter ncurses
+ *
+ * @param view la structure view
+ */
 void destroyNcursesView(View *view)
 {
     NcursesView *ncursesView = (NcursesView *)view->instanciation;
+
+    for (int i = 0; i < 1; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            mvwaddch(ncursesView->title, i + 1, j + 1, ' ');
+        }
+    }
+    wborder(ncursesView->title, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+    wrefresh(ncursesView->title);
+    delwin(ncursesView->title);
 
     for (int i = 0; i < HEIGHT; i++)
     {
@@ -408,6 +513,12 @@ void destroyNcursesView(View *view)
     free(ncursesView);
 }
 
+/**
+ * @brief permet de gérer les évènement de ncurses
+ *
+ * @param view la structure view
+ * @param game la gamestate du jeu
+ */
 void ncursesEvent(View *view, GameState *game)
 {
     int ch;

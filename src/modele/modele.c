@@ -1,11 +1,11 @@
 /**
  * @file modele.c
  * @author Hurez Matteo and Brissy Axel
- * @brief modele du tetris
+ * @brief modèle du tetris
  * @version 1.0
  * @date 2024−01−04
  *
- * @copyright Copyright(c) 2024
+ * @copyright Copyright (c) 2024
  */
 #include <stdlib.h>
 #include <stdio.h>
@@ -206,7 +206,7 @@ void removePiece(GameState *game)
  * @brief déplace la pièce vers le bas
  *
  * @param game gamestate du jeu
- * @return un entier -1 si la pièce est descendu, 0 à 4 si la pièce c'est posé donc n'est pas descendu et dit combien de ligne ont été clear
+ * @return un entier -1 si la pièce est descendue, 0 à 4 si la pièce s'est posée et selon le nombre de lignes qui ont été clear
  */
 int moveDown(GameState *game)
 {
@@ -385,7 +385,7 @@ int verifDeleteLine(Cel *map, int y)
  * @brief permet de descendre la matrice de 1 vers le bas jusqu'à la ligne qu'on a supprimé
  *
  * @param map est la matrice du tetris
- * @param y la hauteur de la ligne à laquel on descend
+ * @param y la hauteur de la ligne à laquelle on descend
  */
 void mapDown(Cel *map, int y)
 {
@@ -441,11 +441,16 @@ int getHighScore(char *file)
     printf("\n");
 
     fclose(f);
+
+    if (high > 999999)
+    {
+        high == 999999;
+    }
     return high;
 }
 
 /**
- * @brief réécrire dans le fichier txt du highscore le nouveau
+ * @brief écrire le nouveau highscore dans le fichier
  *
  * @param file le fichier txt du highscore
  * @param high le highscore à ajouter
@@ -484,32 +489,40 @@ void updateHighScore(char *file, int high)
 }
 
 /**
- * @brief permet d'ajouter le score en fonction du niveau et du noumbre de ligne clear
+ * @brief permet d'ajouter le score en fonction du niveau et du nombre de lignes clear
  *
  * @param nb nombre de ligne clear
  */
 void ajouteScore(int nb)
 {
-    switch (nb)
+    if (score < 999999)
     {
-    case 1:
-        score += 40 * (level + 1);
-        break;
+        switch (nb)
+        {
+        case 1:
+            score += 40 * (level + 1);
+            break;
 
-    case 2:
-        score += 100 * (level + 1);
-        break;
+        case 2:
+            score += 100 * (level + 1);
+            break;
 
-    case 3:
-        score += 300 * (level + 1);
-        break;
+        case 3:
+            score += 300 * (level + 1);
+            break;
 
-    case 4:
-        score += 1200 * (level + 1);
-        break;
+        case 4:
+            score += 1200 * (level + 1);
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
+
+        if (score > 999999)
+        {
+            score = 999999;
+        }
     }
 }
 
@@ -525,11 +538,11 @@ void updateLevel()
 }
 
 /**
- * @brief est appeler quand la pièce c'est posée et permet d'appeler les fonction pour supprimer les lignes si elle sont pleine
+ * @brief est appelée quand la pièce s'est posée et permet d'appeler les fonctions pour supprimer les lignes si elles sont pleines
  *
  * @param map est la matrice du tetris
  * @param p est la pièce qui tombe
- * @return le nombre de ligne qui ont étés supprimés
+ * @return le nombre de ligne qui ont été supprimées
  */
 int piecePosee(Cel *map, Piece p)
 {
@@ -548,7 +561,7 @@ int piecePosee(Cel *map, Piece p)
 }
 
 /**
- * @brief permet de choisir une nouvelle pièce en nextbox et met la pièce avec l'ancienne nextbox
+ * @brief permet de choisir une nouvelle pièce en nextbox et prend l'ancienne pièce de la nextbox pour la placer sur le plateau
  *
  * @param game gamestate du jeu
  */
@@ -563,7 +576,7 @@ void changePiece(GameState *game)
 /**
  * @brief permet de donner la speed du jeu par rapport au level (donne un temps en milliseconde entre chaque descente de pièce)
  *
- * @return un entier positif qui est un temps en milliseconde
+ * @return un entier positif qui est un temps en millisecondes
  */
 unsigned int getSpeed()
 {
@@ -637,8 +650,8 @@ unsigned int getSpeed()
  * @brief donne la différence de temps en milliseconde entre 2 temps
  *
  * @param time1 est le temps courant
- * @param time0 est le temps tempon
- * @return un entier positif qui est un temps en milliseconde
+ * @param time0 est le temps tampon
+ * @return un entier positif qui est un temps en millisecondes
  */
 unsigned int timespecDiff(const struct timespec *time1, const struct timespec *time0)
 {
@@ -657,7 +670,7 @@ void gameLoop(View *view, GameState *game)
     int cleared;
     int ch;
     updateLevel();
-    unsigned int speed = getSpeed(); // en milliseconde
+    unsigned int speed = getSpeed(); // en millisecondes
 
     struct timespec cur;
     timespec_get(&cur, TIME_UTC);

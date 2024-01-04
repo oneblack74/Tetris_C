@@ -14,7 +14,7 @@
 #include "modele/modele.h"
 
 /**
- * @brief créer la structure sdlView et donc initialiser sdl
+ * @brief permet de créer la structure sdlView et initialiser sdl
  *
  * @param w largeur de la fenetre
  * @param h hauteur de la fenetre
@@ -52,7 +52,7 @@ SdlView *createSdlView(unsigned w, unsigned h)
 	sdlView->numSounds = 9;
 	sdlView->numImages = 3;
 
-	// Allouez de l'espace pour le tableau des sonds
+	// Allouer de l'espace pour le tableau des sons
 	sdlView->tab_sounds = (Mix_Chunk **)malloc(sizeof(Mix_Chunk *) * sdlView->numSounds);
 	if (!sdlView->tab_sounds)
 	{
@@ -79,7 +79,7 @@ SdlView *createSdlView(unsigned w, unsigned h)
 		}
 	}
 
-	// Allouez de l'espace pour le tableau de textures
+	// Allouer de l'espace pour le tableau de textures
 	sdlView->tab_texture = (SDL_Texture **)malloc(sdlView->numImages * sizeof(SDL_Texture *));
 	if (!sdlView->tab_texture)
 	{
@@ -117,12 +117,12 @@ SdlView *createSdlView(unsigned w, unsigned h)
 }
 
 /**
- * @brief permet d'afficher un nombre sur la fenetre avec les images
+ * @brief permet d'afficher un nombre sur la fenêtre avec les images
  *
  * @param n le nombre à afficher
  * @param nb_chiffre le nombre de chiffre max à afficher
- * @param x coordonné x de la où on place le nombre
- * @param y coordonné y de la où on place le nombre
+ * @param x coordonnée x de la où on place le nombre
+ * @param y coordonnée y de la où on place le nombre
  * @param color la couleur du nombre (rouge ou blanc)
  * @param sdlView la structure sdlView
  */
@@ -153,7 +153,7 @@ void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *s
 }
 
 /**
- * @brief permet d'update la fenetre et le rendu
+ * @brief permet de mettre à jour la fenêtre et le rendu
  *
  * @param view la structure view
  * @param game la gamestate du jeu
@@ -161,7 +161,7 @@ void afficherNombre(int n, int nb_chiffre, int x, int y, char *color, SdlView *s
 void sdlUpdateView(View *view, GameState *game)
 {
 	SdlView *sdlView = (SdlView *)view->instanciation;
-	// Effacez le rendu précédent
+	// Effacer le rendu précédent
 	SDL_RenderClear(sdlView->renderer);
 
 	// afficher le background
@@ -237,12 +237,12 @@ void sdlUpdateView(View *view, GameState *game)
 		afficherNombre(stats[i], 3, 48 * SCALE, (96 + i * 16) * SCALE, "red", sdlView);
 	}
 
-	// Mettez à jour l'affichage
+	// Mettre à jour l'affichage
 	SDL_RenderPresent(sdlView->renderer);
 }
 
 /**
- * @brief de détruire clear et quitter sdl
+ * @brief permet de clear et quitter sdl
  *
  * @param view la structure view
  */
@@ -272,10 +272,10 @@ void destroySdlView(View *view)
 }
 
 /**
- * @brief permet de jouer un sond
+ * @brief permet de jouer un son
  *
  * @param view la structure view
- * @param ind indice du sond dans le tableau à jouer
+ * @param ind indice du son dans le tableau à jouer
  */
 void play_sound(View *view, int ind)
 {
@@ -285,7 +285,7 @@ void play_sound(View *view, int ind)
 }
 
 /**
- * @brief permet de gérer les évènement de sdl
+ * @brief permet de gérer les évènements de sdl
  *
  * @param view la structure view
  * @param game la gamestate du jeu

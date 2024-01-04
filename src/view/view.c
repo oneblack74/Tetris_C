@@ -14,8 +14,8 @@
 /**
  * @brief permet d'initialiser la vue avec sdl
  *
- * @param w la largeur de la fenetre sdl
- * @param h la hauteur de la fenetre sdl
+ * @param w la largeur de la fenêtre sdl
+ * @param h la hauteur de la fenêtre sdl
  */
 View sdlView_init(unsigned w, unsigned h)
 {

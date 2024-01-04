@@ -15,9 +15,9 @@ typedef struct
 	SDL_Window *window;		   //!< window
 	SDL_Renderer *renderer;	   //!< le rendu
 	SDL_Texture **tab_texture; //!< la tableau contenant les textures
-	Mix_Chunk **tab_sounds;	   //!< le tableau contenant les sonds
+	Mix_Chunk **tab_sounds;	   //!< le tableau contenant les sons
 	int numImages;			   //!< le nombre de texture
-	int numSounds;			   //!< le nombre de sonds
+	int numSounds;			   //!< le nombre de sons
 } SdlView;
 
 SdlView *createSdlView(unsigned w, unsigned h);

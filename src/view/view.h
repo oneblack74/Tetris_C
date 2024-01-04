@@ -8,7 +8,7 @@ typedef struct View View;
 
 /**
  * @enum TypeView
- * @brief enumeration du type de vue
+ * @brief énumeration du type de vue
  */
 typedef enum
 {
@@ -24,7 +24,7 @@ typedef struct
 {
 	void (*updateView)(View *view, GameState *); //!< fonction update
 	void (*destroyView)(View *view);			 //!< fonction destroy
-	void (*play_sound)(View *view, int);		 //!< fonction pour jouer un sond
+	void (*play_sound)(View *view, int);		 //!< fonction pour jouer un son
 	void (*event)(View *view, GameState *);		 //!< fonction evennement
 } Functions_View;
 
