@@ -24,12 +24,10 @@ Le projet suit une architecture **MVC (Modèle-Vue-Contrôleur)** :
 Tetris_C/ 
 ├── doc/ # Documentation 
 ├── src/ 
-│ ├── images/ # Ressources d'images (SDL) 
+│ ├── imag/ # Ressources d'images (SDL) 
 │ ├── sons/ # Ressources sonores (SDL) 
-│ ├── model/ # Logique du jeu (modèle) 
-│ ├── view/ 
-│ │ ├── sdl/ # Vue SDL 
-│ │ └── ncurses/ # Vue ncurses 
+│ ├── modele/ # Logique du jeu (modèle) 
+│ ├── view/ # La vue du jeu
 ├── build/ # Dossier de compilation 
 └── main.c # Point d'entrée
 ```
